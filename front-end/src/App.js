@@ -1,16 +1,18 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import Login from './pages/login';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/" component={ Login } />
-        <Route exact path="/login" component={ Login } />
-      </Switch>
-    </BrowserRouter>
+    <Switch>
+      <Route exact path="/">
+        <Redirect to="/login" />
+      </Route>
+      <Route path="/login" component={ Login } />
+    </Switch>
   );
 }
+// <Redirect from='/' to='/users/profile/:id' />
+// <Route exact path='/register' component={ Redirect } />
 
 export default App;
