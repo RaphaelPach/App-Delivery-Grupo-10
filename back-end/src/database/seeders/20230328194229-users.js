@@ -24,10 +24,10 @@ const usersArray = [
 
 module.exports = {
   up: async (queryInterface, _Sequelize) => {
-    await queryInterface.bulkInsert('Users', usersArray, {});
+    await queryInterface.bulkInsert('users', usersArray, {});
   },
 
   down: async (queryInterface, _Sequelize) => {
-   await queryInterface.bulkDelete('Users', null, {});
+   await queryInterface.bulkDelete('users', null, {});
   },
 };
