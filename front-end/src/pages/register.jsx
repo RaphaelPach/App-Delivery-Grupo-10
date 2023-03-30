@@ -3,7 +3,7 @@ import { Redirect } from 'react-router';
 
 const ROUTE = 'common_register';
 const NAME_ELEMENT = 'input-name';
-// const EMAIL_ELEMENT = 'input-email';
+/* const EMAIL_ELEMENT = 'input-email'; */
 const PASSWORD_ELEMENT = 'input-password';
 const REGISTER_BUTTON_ELEMENT = 'button-register';
 const EMAIL_ERROR_ELEMENT = 'element-invalid-id';
@@ -13,7 +13,7 @@ function Register() {
   const [password, setPassword] = useState('');
   const [enableDisable, setEnableDisable] = useState(true);
   const [emailError, setEmailError] = useState(true);
-  // const [registerPage, setRegisterPage] = useState(false);
+  /* const [registerPage, setRegisterPage] = useState(false); */
 
   const loginHandle = (event) => {
     setLogin(event.target.value);
