@@ -1,56 +1,53 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Redirect } from 'react-router';
 
 const ROUTE = 'common_register';
 const NAME_ELEMENT = 'input-name';
-/* const EMAIL_ELEMENT = 'input-email'; */
+const EMAIL_ELEMENT = 'input-email';
 const PASSWORD_ELEMENT = 'input-password';
 const REGISTER_BUTTON_ELEMENT = 'button-register';
-const EMAIL_ERROR_ELEMENT = 'element-invalid-id';
+const REGISTER_ERROR_ELEMENT = 'element-invalid_register';
 
 function Register() {
-  const [login, setLogin] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [enableDisable, setEnableDisable] = useState(true);
+  const [trueOrFalse, setTrueOrFalse] = useState(true);
   const [emailError, setEmailError] = useState(true);
-  /* const [registerPage, setRegisterPage] = useState(false); */
+  const [redirect, setRedirect] = useState(false);
 
-  const loginHandle = (event) => {
-    setLogin(event.target.value);
-
-    if (regex.test(login)) {
-      setEmailError(false);
-    }
-    if (regex.test(login) && password.length > SEVEN) {
-      setEnableDisable(false);
+  useEffect(() => {
+    const Regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
+    const VRegister = () => {
+      const SIX = 6;
+      const TWELVE = 12;
+      return (Regex.test(email) && password.length >= SIX && name.length >= TWELVE);
+    };
+    if (VRegister()) {
+      setTrueOrFalse(false);
     } else {
-      setEnableDisable(true);
+      setTrueOrFalse(true);
     }
-  };
 
-  const passwordHandle = (event) => {
-    setPassword(event.target.value);
-
-    if (password && regex.test(login) && password.length > SEVEN) {
-      setEnableDisable(false);
-    } else {
-      setEnableDisable(true);
+    if (Regex.test(email)) {
+      return setEmailError(false);
     }
-  };
+  }, [email, password, name]);
 
-  const loginOnClick = () => <Redirect to="/" />;
-  const registerOnClick = () => setRegisterPage(true);
-  // tirar funções daqui
+  if (redirect) {
+    return <Redirect to="/alguma-pagina" />;
+  }
 
   return (
     <div>
       <label htmlFor="name">
-        Name
+        Nome
         <input
           type="text"
           data-testid={ `${ROUTE}__${NAME_ELEMENT}` }
           name="name"
-          onChange={ loginHandle }
+          value={ name }
+          onChange={ (e) => setName(e.target.value) }
           required
         />
       </label>
@@ -59,27 +56,32 @@ function Register() {
         <input
           name="email"
           type="email"
+          data-testid={ `${ROUTE}__${EMAIL_ELEMENT}` }
+          value={ email }
+          onChange={ (e) => setEmail(e.target.value) }
+          required
+        />
+      </label>
+      <label htmlFor="senha">
+        Senha
+        <input
+          name="senha"
+          type="password"
           data-testid={ `${ROUTE}__${PASSWORD_ELEMENT}` }
-          onChange={ passwordHandle }
+          value={ password }
+          onChange={ (e) => setPassword(e.target.value) }
           required
         />
       </label>
       <button
         type="button"
-        onClick={ loginOnClick }
-        disabled={ enableDisable }
-        data-testid={ `${ROUTE}__${LOGIN_BUTTON_ELEMENT}` }
-      >
-        Senha
-      </button>
-      <button
-        type="button"
-        onClick={ registerOnClick }
+        onClick={ () => setRedirect(true) }
+        disabled={ trueOrFalse }
         data-testid={ `${ROUTE}__${REGISTER_BUTTON_ELEMENT}` }
       >
-        Ainda não tenho conta
+        CADASTRAR
       </button>
-      <span data-testid={ `${ROUTE}__${EMAIL_ERROR_ELEMENT}` }>
+      <span data-testid={ `${ROUTE}__${REGISTER_ERROR_ELEMENT}` }>
         { emailError ? 'Alguma menssagem de erro' : null }
       </span>
     </div>
