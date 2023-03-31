@@ -1,49 +1,52 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Redirect } from 'react-router';
+import { useHistory } from 'react-router-dom'; // < ----- serase2?
+import loginHTTP from '../Helpers/axio';
 
 const ROUTE = 'common_login';
 const EMAIL_ELEMENT = 'input-email';
 const PASSWORD_ELEMENT = 'input-password';
 const LOGIN_BUTTON_ELEMENT = 'button-login';
 const REGISTER_BUTTON_ELEMENT = 'button-register';
-const EMAIL_ERROR_ELEMENT = 'element-invalid-id';
+const EMAIL_ERROR_ELEMENT = 'element-invalid-email';
 
 function Login() {
+  const history = useHistory(); // <---------serase?
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState(true);
-  const [trueOrFalse, setTrueOrFalse] = useState(true);
-  const [loginTest, setLoginTest] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  // const [trueOrFalse, setTrueOrFalse] = useState(true);
+  // const [loginTest, setLoginTest] = useState(false);
   const [redirect, setRedirect] = useState(false);
   /* const [registerPage, setRegisterPage] = useState(false); */
 
-  useEffect(() => {
-    const Regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
-    const Vlogin = () => {
-      const SIX = 6;
-      return (Regex.test(email) && password.length >= SIX);
-    };
-    if (Vlogin()) {
-      setTrueOrFalse(false);
-    } else {
-      setTrueOrFalse(true);
-    }
+  const Regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
+  const Vlogin = () => {
+    const SIX = 6;
+    return !(Regex.test(email) && password.length >= SIX);
+  };
 
-    if (Regex.test(email)) {
-      return setEmailError(false);
+  // tentativa numero 268, o mundo nao consegue mais saber se tudo está certo ou nao
+
+  const requestLogin = async (event) => {
+    event.preventDefault();
+    try {
+      await loginHTTP('post', '/login', { email, password });
+      setEmailError(false); // <-- só pra mostrar mensagem que deu ruim
+      return history.push('/customer/products');
+    } catch (error) {
+      setEmailError(true);
+      return new Error();
     }
-  }, [email, password]);
+  };
 
   if (redirect) {
+    // funciona
     return <Redirect to="/register" />;
   }
 
-  if (loginTest) {
-    return <Redirect to="/" />;
-  }
-
   return (
-    <div>
+    <form action="post" onSubmit={ (event) => requestLogin(event) }>
       <label htmlFor="email">
         Email
         <input
@@ -69,24 +72,24 @@ function Login() {
         />
       </label>
       <button
-        type="button"
-        onClick={ () => setLoginTest(true) }
-        disabled={ trueOrFalse }
+        type="submit"
+        /*  onClick={ () => setLoginTest(true) } */
+        disabled={ Vlogin() }
         data-testid={ `${ROUTE}__${LOGIN_BUTTON_ELEMENT}` }
       >
         Login
       </button>
       <button
         type="button"
-        onClick={ () => setRedirect(true) }
+        onClick={ () => setRedirect(true) } // sem aquele if nao vai
         data-testid={ `${ROUTE}__${REGISTER_BUTTON_ELEMENT}` }
       >
         Ainda não tenho conta
       </button>
       <span data-testid={ `${ROUTE}__${EMAIL_ERROR_ELEMENT}` }>
-        { emailError ? 'Alguma menssagem de erro' : null }
+        { emailError ? 'mensagem' : null }
       </span>
-    </div>
+    </form>
   );
 }
 

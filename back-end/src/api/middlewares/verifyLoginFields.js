@@ -9,7 +9,7 @@ const verifyLoginFields = (req, _res, next) => {
 
   const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
   if (!emailRegex.test(email)) {
-    throw new CustomError('400', 'ivalid email format');
+    throw new CustomError('400', 'invalid email format');
   }
 
   if (password.length < 6) {
