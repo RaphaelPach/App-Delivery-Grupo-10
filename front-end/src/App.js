@@ -14,6 +14,5 @@ function App() {
     </Switch>
   );
 }
-// <Redirect from='/' to='/users/profile/:id' />
 
 export default App;
