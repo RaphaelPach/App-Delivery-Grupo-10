@@ -20,7 +20,7 @@ function Login() {
   const [redirect, setRedirect] = useState(false);
   /* const [registerPage, setRegisterPage] = useState(false); */
 
-  const Regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
+  const Regex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
   const Vlogin = () => {
     const SIX = 6;
     return !(Regex.test(email) && password.length >= SIX);
@@ -29,7 +29,8 @@ function Login() {
   const requestLogin = async (event) => {
     event.preventDefault();
     try {
-      await loginHTTP('POST', '/login', { email, password });
+      await loginHTTP({
+        method: 'POST', url: '/login', body: { email, password } });
       setEmailError(false); // <-- só pra mostrar mensagem que deu ruim
       return history.push('/customer/products');
     } catch (error) {
