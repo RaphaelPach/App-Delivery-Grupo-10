@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Redirect } from 'react-router';
 import { useHistory } from 'react-router-dom'; // < ----- serase2?
-import loginHTTP from '../Helpers/axio';
+import loginHTTP from '../Helpers/axios';
 
 const ROUTE = 'common_login';
 const EMAIL_ELEMENT = 'input-email';
@@ -26,12 +26,10 @@ function Login() {
     return !(Regex.test(email) && password.length >= SIX);
   };
 
-  // tentativa numero 268, o mundo nao consegue mais saber se tudo está certo ou nao
-
   const requestLogin = async (event) => {
     event.preventDefault();
     try {
-      await loginHTTP('post', '/login', { email, password });
+      await loginHTTP('POST', '/login', { email, password });
       setEmailError(false); // <-- só pra mostrar mensagem que deu ruim
       return history.push('/customer/products');
     } catch (error) {

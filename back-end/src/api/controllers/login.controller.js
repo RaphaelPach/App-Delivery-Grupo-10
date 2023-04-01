@@ -1,6 +1,6 @@
 const userService = require('../services/user.service');
 
-module.exports = async (req, res, next) => {
+const getByEmailAndPassword = async (req, res, next) => {
   try {
     const { email, password } = req.body;
   
@@ -10,4 +10,16 @@ module.exports = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+const registerLogin = async (req, res) => {
+  const response = await userService.registerLogin(req.body);
+  if (response.type) {
+    return res.status(response.type).json({ token: response.token });
+  }
+};
+
+module.exports = {
+getByEmailAndPassword,
+registerLogin,
 };

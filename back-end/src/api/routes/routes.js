@@ -4,6 +4,7 @@ const verifyLoginFields = require('../middlewares/verifyLoginFields');
 
 const routes = Router();
 
-routes.post('/login', verifyLoginFields, login);
+routes.post('/login', verifyLoginFields, login.getByEmailAndPassword);
+routes.post('/register', verifyLoginFields, login.registerLogin);
 
 module.exports = routes;
