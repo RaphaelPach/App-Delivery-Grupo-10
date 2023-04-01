@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Redirect } from 'react-router';
+/* import { Redirect } from 'react-router'; */
+import { useHistory } from 'react-router-dom';
+import loginHTTP from '../Helpers/axios';
 
 const ROUTE = 'common_register';
 const NAME_ELEMENT = 'input-name';
@@ -9,37 +11,38 @@ const REGISTER_BUTTON_ELEMENT = 'button-register';
 const REGISTER_ERROR_ELEMENT = 'element-invalid_register';
 
 function Register() {
+  const history = useHistory();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [trueOrFalse, setTrueOrFalse] = useState(true);
-  const [emailError, setEmailError] = useState(true);
-  const [redirect, setRedirect] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  /*   const [redirect, setRedirect] = useState(false); */
 
+  const VRegister = () => {
+    const Regex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+    const SIX = 6;
+    const TWELVE = 12;
+    const result = !(
+      Regex.test(email) && password.length >= SIX && name.length >= TWELVE);
+    setTrueOrFalse(result);
+  };
+  const requestRegister = async (event) => {
+    event.preventDefault();
+    try {
+      await loginHTTP({
+        method: 'POST', url: '/register', body: { name, email, password } });
+      return history.push('/customer/products');
+    } catch (error) {
+      setEmailError(true);
+      return new Error();
+    }
+  };
   useEffect(() => {
-    const Regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
-    const VRegister = () => {
-      const SIX = 6;
-      const TWELVE = 12;
-      return (Regex.test(email) && password.length >= SIX && name.length >= TWELVE);
-    };
-    if (VRegister()) {
-      setTrueOrFalse(false);
-    } else {
-      setTrueOrFalse(true);
-    }
-
-    if (Regex.test(email)) {
-      return setEmailError(false);
-    }
-  }, [email, password, name]);
-
-  if (redirect) {
-    return <Redirect to="/alguma-pagina" />;
-  }
-
+    VRegister();
+  });
   return (
-    <div>
+    <form action="post" onSubmit={ requestRegister }>
       <label htmlFor="name">
         Nome
         <input
@@ -74,9 +77,9 @@ function Register() {
         />
       </label>
       <button
-        type="button"
-        onClick={ () => setRedirect(true) }
+        type="submit"
         disabled={ trueOrFalse }
+        onClick={ requestRegister }
         data-testid={ `${ROUTE}__${REGISTER_BUTTON_ELEMENT}` }
       >
         CADASTRAR
@@ -84,7 +87,7 @@ function Register() {
       <span data-testid={ `${ROUTE}__${REGISTER_ERROR_ELEMENT}` }>
         { emailError ? 'Alguma menssagem de erro' : null }
       </span>
-    </div>
+    </form>
   );
 }
 
