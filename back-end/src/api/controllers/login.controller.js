@@ -20,6 +20,6 @@ const registerLogin = async (req, res) => {
 };
 
 module.exports = {
-getByEmailAndPassword,
-registerLogin,
+  getByEmailAndPassword,
+  registerLogin,
 };
