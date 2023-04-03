@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import loginHTTP from '../Helpers/axios';
 
 const ROUTE = 'customer_products';
@@ -15,17 +16,27 @@ const ADD_PRODUCT = 'button-card-add-item-';// adiciona id no final
 // const CART_VALUE = 'checkout-bottom-value';
 
 function ProductCard() {
+  const history = useHistory();
   const [products, setProducts] = useState([]);
   const [isLoading, setLoading] = useState(true);
 
-  const getProducts = async () => {
-    const response = await loginHTTP({ method: 'get', url: '/customer/products' });
-    console.log(response.data.urlImage);
-    setProducts(response.data);
-  };
-
   useEffect(() => {
     const ONE_SEC = 1000;
+
+    const getProducts = async () => {
+      if (JSON.parse(localStorage.getItem('user')) === null) {
+        localStorage.setItem('user', JSON.stringify({ token: '' }));
+      }
+      try {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const response = await loginHTTP({
+          method: 'get', url: '/customer/products', token: user.token });
+        setProducts(response.data);
+      } catch (error) {
+        history.push('/');
+        return new Error();
+      }
+    };
 
     getProducts();
 
@@ -34,7 +45,19 @@ function ProductCard() {
     return () => {
       clearTimeout(timer);
     };
-  }, []);
+  }, [history]);
+
+  const addItem = (id) => {
+    const input = document.getElementById(`${ROUTE}__${PRODUCT_QUANTITY}${id}`);
+    input.value = Number(input.value) + 1;
+  };
+
+  const removeItem = (id) => {
+    const input = document.getElementById(`${ROUTE}__${PRODUCT_QUANTITY}${id}`);
+    if (input.value !== '0') {
+      input.value = Number(input.value) - 1;
+    }
+  };
 
   return (isLoading ? <span>Loading</span> : products.map((e) => (
     <div key={ e.id }>
@@ -54,13 +77,20 @@ function ProductCard() {
         <span data-testid={ `${ROUTE}__${PRODUCT_TITLE}${e.id}` }>{ e.name }</span>
         <button
           type="button"
+          onClick={ () => removeItem(e.id) }
           data-testid={ `${ROUTE}__${REMOVE_PRODUCT}${e.id}` }
         >
           -
         </button>
-        <input data-testid={ `${ROUTE}__${PRODUCT_QUANTITY}${e.id}` } type="number" />
+        <input
+          id={ `${ROUTE}__${PRODUCT_QUANTITY}${e.id}` }
+          data-testid={ `${ROUTE}__${PRODUCT_QUANTITY}${e.id}` }
+          type="number"
+          value={ 0 }
+        />
         <button
           type="button"
+          onClick={ () => addItem(e.id) }
           data-testid={ `${ROUTE}__${ADD_PRODUCT}${e.id}` }
         >
           +

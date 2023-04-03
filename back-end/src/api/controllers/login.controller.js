@@ -4,9 +4,9 @@ const getByEmailAndPassword = async (req, res, next) => {
   try {
     const { email, password } = req.body;
   
-    await userService.getByEmailAndPassword(email, password);
+    const a = await userService.getByEmailAndPassword(email, password);
 
-    res.status(200).json({ result: 'logging in' });
+    return res.status(200).json(a);
   } catch (error) {
     next(error);
   }
