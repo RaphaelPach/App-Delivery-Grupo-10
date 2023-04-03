@@ -71,6 +71,7 @@ function ProductCard() {
         <img
           src={ e.urlImage }
           alt={ e.name }
+          width="150px"
           data-testid={ `${ROUTE}__${PRODUCT_IMAGE}${e.id}` }
         />
       </div>

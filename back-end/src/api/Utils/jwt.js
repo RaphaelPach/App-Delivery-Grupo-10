@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 
-const secret = 'secret_key';
+const secret = require('fs')
+.readFileSync('jwt.evaluation.key', { encoding: 'utf-8' });
 
   function createTokenJWT(payload) {
   const config = {
