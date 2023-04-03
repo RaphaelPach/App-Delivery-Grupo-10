@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Redirect } from 'react-router';
-import { useHistory } from 'react-router-dom'; // < ----- serase2?
+import { useHistory } from 'react-router-dom';
 import loginHTTP from '../Helpers/axios';
 
 const ROUTE = 'common_login';
@@ -11,7 +11,7 @@ const REGISTER_BUTTON_ELEMENT = 'button-register';
 const EMAIL_ERROR_ELEMENT = 'element-invalid-email';
 
 function Login() {
-  const history = useHistory(); // <---------serase?
+  const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState(false);
@@ -29,9 +29,18 @@ function Login() {
   const requestLogin = async (event) => {
     event.preventDefault();
     try {
-      await loginHTTP({
+      const response = await loginHTTP({
         method: 'POST', url: '/login', body: { email, password } });
-      setEmailError(false); // <-- só pra mostrar mensagem que deu ruim
+
+      const user = {
+        token: response.data.token,
+        name: response.data.name,
+        email: response.data.email,
+        role: response.data.role,
+      };
+
+      localStorage.setItem('user', JSON.stringify(user));
+      setEmailError(false);
       return history.push('/customer/products');
     } catch (error) {
       setEmailError(true);
@@ -40,7 +49,6 @@ function Login() {
   };
 
   if (redirect) {
-    // funciona
     return <Redirect to="/register" />;
   }
 
@@ -72,7 +80,6 @@ function Login() {
       </label>
       <button
         type="submit"
-        /*  onClick={ () => setLoginTest(true) } */
         disabled={ Vlogin() }
         data-testid={ `${ROUTE}__${LOGIN_BUTTON_ELEMENT}` }
       >
@@ -80,7 +87,7 @@ function Login() {
       </button>
       <button
         type="button"
-        onClick={ () => setRedirect(true) } // sem aquele if nao vai
+        onClick={ () => setRedirect(true) }
         data-testid={ `${ROUTE}__${REGISTER_BUTTON_ELEMENT}` }
       >
         Ainda não tenho conta

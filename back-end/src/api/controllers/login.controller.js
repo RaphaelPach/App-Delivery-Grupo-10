@@ -4,9 +4,9 @@ const getByEmailAndPassword = async (req, res, next) => {
   try {
     const { email, password } = req.body;
   
-    await userService.getByEmailAndPassword(email, password);
+    const a = await userService.getByEmailAndPassword(email, password);
 
-    res.status(200).json({ result: 'logging in' });
+    return res.status(200).json(a);
   } catch (error) {
     next(error);
   }
@@ -14,12 +14,19 @@ const getByEmailAndPassword = async (req, res, next) => {
 
 const registerLogin = async (req, res) => {
   const response = await userService.registerLogin(req.body);
-  if (response.type) {
-    return res.status(response.type).json({ token: response.token });
+  if (response.type === 201) {
+    return res.status(response.type).json({
+      token: response.token,
+      name: response.name,
+      email: response.email,
+      role: response.role,
+    });
   }
+
+  return res.status(response.type).json(response.message);
 };
 
 module.exports = {
-getByEmailAndPassword,
-registerLogin,
+  getByEmailAndPassword,
+  registerLogin,
 };

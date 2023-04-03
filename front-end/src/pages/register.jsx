@@ -30,8 +30,18 @@ function Register() {
   const requestRegister = async (event) => {
     event.preventDefault();
     try {
-      await loginHTTP({
+      const response = await loginHTTP({
         method: 'POST', url: '/register', body: { name, email, password } });
+
+      const user = {
+        token: response.data.token,
+        name,
+        email,
+        role: response.data.role,
+      };
+
+      localStorage.setItem('user', JSON.stringify(user));
+
       return history.push('/customer/products');
     } catch (error) {
       setEmailError(true);
