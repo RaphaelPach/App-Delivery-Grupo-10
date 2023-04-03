@@ -29,9 +29,9 @@ const { createTokenJWT } = require('../Utils/jwt');
     });
     if (!user) {
       const hashedPassword = md5(password);
-      await User.create({ name, email, password: hashedPassword, role: 'costumer' });
+      await User.create({ name, email, password: hashedPassword, role: 'customer' });
       const token = createTokenJWT({ name, email, password: hashedPassword });
-      return { token, type: 201, message: 'Created' };
+      return { token, type: 201, name, email, role: 'customer' };
     }
       return { type: 409, message: 'Conflict' };
   };

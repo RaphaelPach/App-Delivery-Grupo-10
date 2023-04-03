@@ -33,6 +33,7 @@ function ProductCard() {
           method: 'get', url: '/customer/products', token: user.token });
         setProducts(response.data);
       } catch (error) {
+        localStorage.removeItem('user');
         history.push('/');
         return new Error();
       }

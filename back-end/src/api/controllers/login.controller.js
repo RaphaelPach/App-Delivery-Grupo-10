@@ -14,9 +14,16 @@ const getByEmailAndPassword = async (req, res, next) => {
 
 const registerLogin = async (req, res) => {
   const response = await userService.registerLogin(req.body);
-  if (response.type) {
-    return res.status(response.type).json({ token: response.token });
+  if (response.type === 201) {
+    return res.status(response.type).json({
+      token: response.token,
+      name: response.name,
+      email: response.email,
+      role: response.role,
+    });
   }
+
+  return res.status(response.type).json(response.message);
 };
 
 module.exports = {
