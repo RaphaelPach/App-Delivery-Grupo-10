@@ -4,6 +4,7 @@ import ProductsNavBar from '../components/productsNavBar';
 import ProductCard from '../components/productsCard';
 
 import loginHTTP from '../Helpers/axios';
+import ButtonCart from '../components/buttonCart';
 
 function Products() {
   const history = useHistory();
@@ -44,6 +45,7 @@ function Products() {
       <ProductsNavBar />
       { isLoading ? <div>LOADING...</div> : products
         .map((product) => (<ProductCard key={ product.id } product={ product } />))}
+      <ButtonCart />
     </div>
   );
 }

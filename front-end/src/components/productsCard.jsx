@@ -19,28 +19,96 @@ function ProductCard(props) {
   const { id, name, urlImage, price } = product;
 
   const addItem = () => {
-    setQuantity(quantity + 1);
+    setQuantity((previous) => previous + 1);
     if (localStorage.getItem('Cart') === null) {
-      localStorage.setItem('Cart', JSON.stringify([]));
+      localStorage.setItem('totalPrice', price);
+      return localStorage.setItem('Cart', JSON
+        .stringify([{ id, urlImage, price, name, quantity: quantity + 1 }]));
     }
-
+    const preco = JSON.parse(localStorage.getItem('totalPrice'));
     const obj = JSON.parse(localStorage.getItem('Cart'));
-    // obj.push({ id, urlImage, price, name });
-    localStorage.setItem('Cart', JSON.stringify([...obj,
-      { id, urlImage, price, name, quantity }]));
+    if (!obj.find((e) => e.id === id)) {
+      const a = Number(preco) + Number(price);
+      localStorage.setItem('totalPrice', a);
+      return localStorage.setItem('Cart', JSON
+        .stringify([...obj, { id, urlImage, price, name, quantity }]));
+    }
+    const item = obj.find((e) => e.id === id);
+    item.quantity = quantity + 1;
+    const index = obj.findIndex((e) => e.id === id);
+    obj[index] = item;
+
+    const a = Number(preco) + Number(price);
+    localStorage.setItem('totalPrice', a);
+    localStorage.setItem('Cart', JSON.stringify(obj));
   };
 
   const removeItem = () => {
     if (quantity !== 0) {
+      setQuantity((previous) => previous - 1);
+      if (localStorage.getItem('Cart') === null) {
+        localStorage.setItem('totalPrice', 0.00);
+        return localStorage.setItem('Cart', JSON
+          .stringify([]));
+      }
+      const preco = JSON.parse(localStorage.getItem('totalPrice'));
       const obj = JSON.parse(localStorage.getItem('Cart'));
-      console.log('-----------', obj);
-      const result = obj.find((e) => e.id === id);
-      console.log(result);
-      result.quantity -= 1;
-      console.log(result);
-      localStorage.setItem('Cart', JSON.stringify(result));
-      setQuantity(quantity - 1);
+      const item = obj.find((e) => e.id === id);
+      const index = obj.findIndex((e) => e.id === id);
+      item.quantity = quantity - 1;
+      const a = Number(preco) - Number(price);
+      localStorage.setItem('totalPrice', a);
+
+      if (item.quantity < 1) {
+        const result = obj.filter((e) => e.id !== id);
+        return localStorage.setItem('Cart', JSON
+          .stringify(result));
+      }
+      obj[index] = item;
+      localStorage.setItem('Cart', JSON.stringify(obj));
     }
+  };
+
+  // medo
+  const handleChange = (event) => {
+    setQuantity(Number(event.target.value));
+    const preco = JSON.parse(localStorage.getItem('totalPrice'));
+    if (localStorage.getItem('Cart') === null
+    || JSON.parse(localStorage.getItem('Cart')).length === 0) {
+      return localStorage.setItem('Cart', JSON.stringify([
+        { id, urlImage, price, name, quantity: Number(event.target.value) }]));
+    }
+
+    if (Number(event.target.value) > quantity) {
+      // ADICIONA
+      const a = Number(price) * Number(event.target.value);
+      localStorage.setItem('totalPrice', Number(preco) + a);
+    }
+
+    if (Number(event.target.value) < quantity) {
+      // REMOVE
+      const a = Number(price) * Number(event.target.value);
+      localStorage.setItem('totalPrice', Number(-preco) + a);
+    }
+
+    const obj = JSON.parse(localStorage.getItem('Cart'));
+    const item = obj.find((e) => e.id === id);
+
+    if (!item) {
+      return localStorage.setItem('Cart', JSON.stringify([...obj,
+        { id, urlImage, price, name, quantity: Number(event.target.value) }]));
+    }
+    const index = obj.findIndex((e) => e.id === id);
+    item.quantity = Number(event.target.value);
+
+    if (item.quantity < 1) {
+      const result = obj.filter((e) => e.id !== id);
+      return localStorage.setItem('Cart', JSON
+        .stringify(result));
+    }
+
+    obj[index] = item;
+    localStorage.setItem('Cart', JSON.stringify(obj));
   };
   // const handleChange = ({ target }) => {
   //   if (target.name === 'decrease' && quantity !== 0) {
@@ -79,8 +147,8 @@ function ProductCard(props) {
           -
         </button>
         <input
+          onChange={ handleChange }
           data-testid={ `${ROUTE}__${PRODUCT_QUANTITY}${id}` }
-          type="number"
           value={ quantity }
         />
         <button
@@ -97,10 +165,12 @@ function ProductCard(props) {
 }
 
 ProductCard.propTypes = {
-  name: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired,
-  urlImage: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
+  product: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    urlImage: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default ProductCard;
