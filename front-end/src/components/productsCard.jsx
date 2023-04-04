@@ -1,7 +1,7 @@
 // import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const ROUTE = 'customer_products';
 
@@ -18,23 +18,27 @@ function ProductCard(props) {
   const { product } = props;
   const { id, name, urlImage, price } = product;
 
-  const addItem = () => {
-    setQuantity(quantity + 1);
+  useEffect(() => {
     if (localStorage.getItem('Cart') === null) {
       localStorage.setItem('Cart', JSON.stringify([]));
     }
 
-    const obj = JSON.parse(localStorage.getItem('Cart'));
-    // obj.push({ id, urlImage, price, name });
-    localStorage.setItem('Cart', JSON.stringify([...obj,
-      { id, urlImage, price, name, quantity }]));
-  };
+    const obj = JSON.parse(localStorage.getItem('Cart', []));
+    const index = obj.findIndex((e) => e.id === id);
+    if (index < 0) {
+      obj.push({ ...product, quantity });
+    } else {
+      obj[index] = { ...product, quantity };
+    }
+    console.log(obj);
+    localStorage.setItem('Cart', JSON.stringify(obj));
+  }, [quantity, id, product]);
 
   const removeItem = () => {
     if (quantity !== 0) {
       const obj = JSON.parse(localStorage.getItem('Cart'));
       console.log('-----------', obj);
-      const result = obj.find((e) => e.id === id);
+      const result = obj.filter((e) => e.id !== id);
       console.log(result);
       result.quantity -= 1;
       console.log(result);
@@ -42,6 +46,8 @@ function ProductCard(props) {
       setQuantity(quantity - 1);
     }
   };
+
+  // voltar com solução na mente gabo
   // const handleChange = ({ target }) => {
   //   if (target.name === 'decrease' && quantity !== 0) {
   //     setQuantity(quantity - 1);
@@ -74,7 +80,7 @@ function ProductCard(props) {
           onClick={ removeItem }
           data-testid={ `${ROUTE}__${REMOVE_PRODUCT}${id}` }
           // onClick={ handleChange }
-          // name="decrease"
+          // name="decrease"rease"
         >
           -
         </button>
@@ -86,7 +92,9 @@ function ProductCard(props) {
         <button
           type="button"
           name="quantity"
-          onClick={ addItem }
+          onClick={ () => {
+            setQuantity(quantity + 1);
+          } }
           data-testid={ `${ROUTE}__${ADD_PRODUCT}${id}` }
         >
           +
