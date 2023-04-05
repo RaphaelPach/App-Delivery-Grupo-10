@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import loginHTTP from '../Helpers/axios';
+import { useContext, useState } from 'react';
+// import { useState } from 'react';
+import PropTypes from 'prop-types';
+// import { ProductProvider } from '../context/productsProvider';
+import AppContext from '../context/AppContext';
 
 const ROUTE = 'customer_products';
 
@@ -12,93 +14,140 @@ const REMOVE_PRODUCT = 'button-card-rm-item-';// adiciona id no final
 const PRODUCT_QUANTITY = 'input-card-quantity-';// adiciona id no final
 const ADD_PRODUCT = 'button-card-add-item-';// adiciona id no final
 
-// const CART_BUTTON = 'button-cart';
-// const CART_VALUE = 'checkout-bottom-value';
+function ProductCard(props) {
+  const { teste, setTeste } = useContext(AppContext);
+  const [quantity, setQuantity] = useState(0);
+  const { product } = props;
+  const { id, name, urlImage, price } = product;
 
-function ProductCard() {
-  const history = useHistory();
-  const [products, setProducts] = useState([]);
-  const [isLoading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const ONE_SEC = 1000;
-
-    const getProducts = async () => {
-      if (JSON.parse(localStorage.getItem('user')) === null) {
-        localStorage.setItem('user', JSON.stringify({ token: '' }));
-      }
-      try {
-        const user = JSON.parse(localStorage.getItem('user'));
-        const response = await loginHTTP({
-          method: 'get', url: '/customer/products', token: user.token });
-        setProducts(response.data);
-      } catch (error) {
-        localStorage.removeItem('user');
-        history.push('/');
-        return new Error();
-      }
-    };
-
-    getProducts();
-
-    const timer = setTimeout(() => setLoading(false), ONE_SEC);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [history]);
-
-  const addItem = (id) => {
-    const input = document.getElementById(`${ROUTE}__${PRODUCT_QUANTITY}${id}`);
-    input.value = Number(input.value) + 1;
+  /* useEffect(() => {}, [quantity]); */
+  const addItem = () => {
+    setQuantity((previous) => previous + 1);
+    if (localStorage.getItem('Cart') === null) {
+      localStorage.setItem('Cart', JSON
+        .stringify([{ id, urlImage, price, name, quantity: quantity + 1 }]));
+      return setTeste(teste + 1);
+    }
+    const obj = JSON.parse(localStorage.getItem('Cart'));
+    if (!obj.find((e) => e.id === id)) {
+      setTeste(teste + 1);
+      return localStorage.setItem('Cart', JSON
+        .stringify([...obj, { id, urlImage, price, name, quantity: quantity + 1 }]));
+    }
+    const item = obj.find((e) => e.id === id);
+    item.quantity = quantity + 1;
+    const index = obj.findIndex((e) => e.id === id);
+    obj[index] = item;
+    localStorage.setItem('Cart', JSON.stringify(obj));
+    setTeste(teste + 1);
   };
 
-  const removeItem = (id) => {
-    const input = document.getElementById(`${ROUTE}__${PRODUCT_QUANTITY}${id}`);
-    if (input.value !== '0') {
-      input.value = Number(input.value) - 1;
+  const removeItem = () => {
+    if (quantity !== 0) {
+      setQuantity((previous) => previous - 1);
+      if (localStorage.getItem('Cart') === null) {
+        localStorage.setItem('Cart', JSON.stringify([]));
+        return setTeste(teste + 1);
+      }
+      const obj = JSON.parse(localStorage.getItem('Cart'));
+      const item = obj.find((e) => e.id === id);
+      const index = obj.findIndex((e) => e.id === id);
+      item.quantity = quantity - 1;
+
+      if (item.quantity < 1) {
+        const result = obj.filter((e) => e.id !== id);
+        localStorage.setItem('Cart', JSON
+          .stringify(result));
+        return setTeste(teste + 1);
+      }
+      obj[index] = item;
+      localStorage.setItem('Cart', JSON.stringify(obj));
+      setTeste(teste + 1);
     }
   };
 
-  return (isLoading ? <span>Loading</span> : products.map((e) => (
-    <div key={ e.id }>
+  // medo
+  const handleChange = (event) => {
+    setQuantity(Number(event.target.value));
+    if (localStorage.getItem('Cart') === null
+    || JSON.parse(localStorage.getItem('Cart')).length === 0) {
+      localStorage.setItem('Cart', JSON.stringify([
+        { id, urlImage, price, name, quantity: Number(event.target.value) }]));
+      return setTeste(teste + 1);
+    }
+
+    const obj = JSON.parse(localStorage.getItem('Cart'));
+    const item = obj.find((e) => e.id === id);
+
+    if (!item) {
+      localStorage.setItem('Cart', JSON.stringify([...obj,
+        { id, urlImage, price, name, quantity: Number(event.target.value) }]));
+      return setTeste(teste + 1);
+    }
+    const index = obj.findIndex((e) => e.id === id);
+    item.quantity = Number(event.target.value);
+
+    if (item.quantity < 1) {
+      const result = obj.filter((e) => e.id !== id);
+      localStorage.setItem('Cart', JSON
+        .stringify(result));
+      return setTeste(teste + 1);
+    }
+    obj[index] = item;
+    localStorage.setItem('Cart', JSON.stringify(obj));
+    setTeste(teste + 1);
+  };
+  return (
+    <div key={ id }>
       <div>
-        <span data-testid={ `${ROUTE}__${PRODUCT_PRICE}${e.id}` }>
+        <span data-testid={ `${ROUTE}__${PRODUCT_PRICE}${id}` }>
           {
-            e.price.replace('.', ',')
+            price.replace('.', ',')
           }
         </span>
         <img
-          src={ e.urlImage }
-          alt={ e.name }
-          data-testid={ `${ROUTE}__${PRODUCT_IMAGE}${e.id}` }
+          src={ urlImage }
+          alt={ name }
+          width="150px"
+          data-testid={ `${ROUTE}__${PRODUCT_IMAGE}${id}` }
         />
       </div>
       <div>
-        <span data-testid={ `${ROUTE}__${PRODUCT_TITLE}${e.id}` }>{ e.name }</span>
+        <span data-testid={ `${ROUTE}__${PRODUCT_TITLE}${id}` }>{ name }</span>
         <button
           type="button"
-          onClick={ () => removeItem(e.id) }
-          data-testid={ `${ROUTE}__${REMOVE_PRODUCT}${e.id}` }
+          onClick={ removeItem }
+          data-testid={ `${ROUTE}__${REMOVE_PRODUCT}${id}` }
+          // onClick={ handleChange }
+          // name="decrease"rease"
         >
           -
         </button>
         <input
-          id={ `${ROUTE}__${PRODUCT_QUANTITY}${e.id}` }
-          data-testid={ `${ROUTE}__${PRODUCT_QUANTITY}${e.id}` }
-          type="number"
-          value={ 0 }
+          onChange={ handleChange }
+          data-testid={ `${ROUTE}__${PRODUCT_QUANTITY}${id}` }
+          value={ quantity }
         />
         <button
           type="button"
-          onClick={ () => addItem(e.id) }
-          data-testid={ `${ROUTE}__${ADD_PRODUCT}${e.id}` }
+          name="quantity"
+          onClick={ addItem }
+          data-testid={ `${ROUTE}__${ADD_PRODUCT}${id}` }
         >
           +
         </button>
       </div>
     </div>
-  )));
+  );
 }
+
+ProductCard.propTypes = {
+  product: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    urlImage: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 export default ProductCard;
