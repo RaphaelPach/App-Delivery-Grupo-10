@@ -41,6 +41,9 @@ function Login() {
 
       localStorage.setItem('user', JSON.stringify(user));
       setEmailError(false);
+      if (user.role === 'administrator') {
+        return history.push('/admin/manage');
+      }
       return history.push('/customer/products');
     } catch (error) {
       setEmailError(true);
