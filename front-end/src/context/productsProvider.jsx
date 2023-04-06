@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import AppContext from './AppContext';
 
 function ProductProvider({ children }) {
-  const [teste, setTeste] = useState(0);
+  const [update, setUpdate] = useState(0);
 
   const context = useMemo(() => ({
-    teste,
-    setTeste,
+    update,
+    setUpdate,
   }), [
-    teste,
-    setTeste,
+    update,
+    setUpdate,
   ]);
 
   return (

@@ -9,7 +9,7 @@ const CHECKOUT_BOTTOM_VALUE = 'checkout-bottom-value';
 
 function ButtonCart() {
   const history = useHistory();
-  const { teste } = useContext(AppContext);
+  const { update } = useContext(AppContext);
   const [price, setPrice] = useState(0.00);
   useEffect(() => {
     const calculation = () => {
@@ -27,7 +27,7 @@ function ButtonCart() {
       return setPrice(result);
     };
     calculation();
-  }, [teste]);
+  }, [update]);
 
   function handleClick() {
     history.push('/customer/checkout');
