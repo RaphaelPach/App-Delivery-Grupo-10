@@ -1,7 +1,5 @@
 import { useContext, useState } from 'react';
-// import { useState } from 'react';
 import PropTypes from 'prop-types';
-// import { ProductProvider } from '../context/productsProvider';
 import AppContext from '../context/AppContext';
 
 const ROUTE = 'customer_products';
@@ -15,7 +13,7 @@ const PRODUCT_QUANTITY = 'input-card-quantity-';// adiciona id no final
 const ADD_PRODUCT = 'button-card-add-item-';// adiciona id no final
 
 function ProductCard(props) {
-  const { teste, setTeste } = useContext(AppContext);
+  const { update, setUpdate } = useContext(AppContext);
   const [quantity, setQuantity] = useState(0);
   const { product } = props;
   const { id, name, urlImage, price } = product;
@@ -26,11 +24,11 @@ function ProductCard(props) {
     if (localStorage.getItem('Cart') === null) {
       localStorage.setItem('Cart', JSON
         .stringify([{ id, urlImage, price, name, quantity: quantity + 1 }]));
-      return setTeste(teste + 1);
+      return setUpdate(update + 1);
     }
     const obj = JSON.parse(localStorage.getItem('Cart'));
     if (!obj.find((e) => e.id === id)) {
-      setTeste(teste + 1);
+      setUpdate(update + 1);
       return localStorage.setItem('Cart', JSON
         .stringify([...obj, { id, urlImage, price, name, quantity: quantity + 1 }]));
     }
@@ -39,7 +37,7 @@ function ProductCard(props) {
     const index = obj.findIndex((e) => e.id === id);
     obj[index] = item;
     localStorage.setItem('Cart', JSON.stringify(obj));
-    setTeste(teste + 1);
+    setUpdate(update + 1);
   };
 
   const removeItem = () => {
@@ -47,7 +45,7 @@ function ProductCard(props) {
       setQuantity((previous) => previous - 1);
       if (localStorage.getItem('Cart') === null) {
         localStorage.setItem('Cart', JSON.stringify([]));
-        return setTeste(teste + 1);
+        return setUpdate(update + 1);
       }
       const obj = JSON.parse(localStorage.getItem('Cart'));
       const item = obj.find((e) => e.id === id);
@@ -58,11 +56,11 @@ function ProductCard(props) {
         const result = obj.filter((e) => e.id !== id);
         localStorage.setItem('Cart', JSON
           .stringify(result));
-        return setTeste(teste + 1);
+        return setUpdate(update + 1);
       }
       obj[index] = item;
       localStorage.setItem('Cart', JSON.stringify(obj));
-      setTeste(teste + 1);
+      setUpdate(update + 1);
     }
   };
 
@@ -73,7 +71,7 @@ function ProductCard(props) {
     || JSON.parse(localStorage.getItem('Cart')).length === 0) {
       localStorage.setItem('Cart', JSON.stringify([
         { id, urlImage, price, name, quantity: Number(event.target.value) }]));
-      return setTeste(teste + 1);
+      return setUpdate(update + 1);
     }
 
     const obj = JSON.parse(localStorage.getItem('Cart'));
@@ -82,7 +80,7 @@ function ProductCard(props) {
     if (!item) {
       localStorage.setItem('Cart', JSON.stringify([...obj,
         { id, urlImage, price, name, quantity: Number(event.target.value) }]));
-      return setTeste(teste + 1);
+      return setUpdate(update + 1);
     }
     const index = obj.findIndex((e) => e.id === id);
     item.quantity = Number(event.target.value);
@@ -91,11 +89,11 @@ function ProductCard(props) {
       const result = obj.filter((e) => e.id !== id);
       localStorage.setItem('Cart', JSON
         .stringify(result));
-      return setTeste(teste + 1);
+      return setUpdate(update + 1);
     }
     obj[index] = item;
     localStorage.setItem('Cart', JSON.stringify(obj));
-    setTeste(teste + 1);
+    setUpdate(update + 1);
   };
   return (
     <div key={ id }>
