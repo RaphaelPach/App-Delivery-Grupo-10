@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import ProductsNavBar from '../components/productsNavBar';
 import ProductCard from '../components/productsCard';
-
+// pelo amor de deus
 import loginHTTP from '../Helpers/axios';
 import ButtonCart from '../components/buttonCart';
 
