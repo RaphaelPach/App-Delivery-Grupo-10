@@ -16,4 +16,16 @@ const loginHTTP = async ({ url, method, body, token }) => api
     },
   }).then(({ status, data }) => ({ status, data }));
 
-export default loginHTTP;
+const adminRegisterHTTP = async ({ url, method, body }) => api
+  .request({
+    url,
+    method,
+    data: body,
+    // headers: {
+    //   Authorization: token,
+    //   Accept: 'application/json',
+    //   'Content-Type': 'application/json',
+    // },
+  }).then(({ status, data }) => ({ status, data }));
+
+export { loginHTTP, adminRegisterHTTP };

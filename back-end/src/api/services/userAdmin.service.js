@@ -19,7 +19,7 @@ const getByEmailAndPasswordAdmin = async (email, password) => {
   };
   const registerAdmin = async ({ email, password, name, role }) => {
     const user = await User.findOne({
-      where: { email },
+      where: { name, email },
     });
     if (!user) {
       const hashedPassword = md5(password);
