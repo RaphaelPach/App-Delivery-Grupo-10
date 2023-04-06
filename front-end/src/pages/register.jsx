@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 /* import { Redirect } from 'react-router'; */
 import { useHistory } from 'react-router-dom';
-import loginHTTP from '../Helpers/axios';
+import { loginHTTP } from '../Helpers/axios';
 
 const ROUTE = 'common_register';
 const NAME_ELEMENT = 'input-name';

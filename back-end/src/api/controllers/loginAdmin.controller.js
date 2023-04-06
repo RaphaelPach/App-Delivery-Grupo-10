@@ -13,6 +13,7 @@ const getByEmailAndPasswordAdmin = async (req, res, next) => {
   };
 
   const registerLoginAdmin = async (req, res) => {
+    console.log(req.body);
     const response = await userAdminService.registerAdmin(req.body);
     if (response.type === 201) {
       return res.status(response.type).json({

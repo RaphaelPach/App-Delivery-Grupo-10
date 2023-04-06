@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 // import { useHistory } from 'react-router-dom';
 import ProductsNavBar from '../components/productsNavBar';
+import { loginHTTP } from '../Helpers/axios';
 
 const ROUTE = 'admin_manage';
 const NAME_ELEMENT = 'input-name';
@@ -8,12 +9,13 @@ const EMAIL_ELEMENT = 'input-email';
 const PASSWORD_ELEMENT = 'input-password';
 const REGISTER_BUTTON_ELEMENT = 'button-register';
 const SELECT_ROLE_BUTTON = 'select-role';
+const REGISTER_ERROR_ELEMENT = 'element-invalid-register';
 
 function AdminRegister() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [choice, setChoice] = useState();
+  const [choice, setChoice] = useState('costumer');
   const [trueOrFalse, setTrueOrFalse] = useState(true);
   const [emailError, setEmailError] = useState(false);
   // const history = useHistory();
@@ -29,25 +31,30 @@ function AdminRegister() {
 
   const requestRegister = async (event) => {
     event.preventDefault();
+    console.log();
     try {
-      const response = await loginHTTP({
+      const admin = JSON.parse(localStorage.getItem('user'));
+      const { token } = admin;
+      await loginHTTP({
+        url: '/admin/manage',
         method: 'POST',
-        url: 'admin/manage',
         body:
-         { name, email, password, role: choice } });
+         { name, email, password, role: choice },
+        token });
 
-      const user = {
-        token: response.data.token,
-        name,
-        email,
-        role: response.data.role,
-      };
+      // const user = {
+      //   token: response.data.token,
+      //   name,
+      //   email,
+      //   role: response.data.role,
+      // };
 
-      localStorage.setItem('user', JSON.stringify(user));
+      // localStorage.setItem('user', JSON.stringify(user));
 
     // return history.push('/customer/products'
     } catch (error) {
       setEmailError(true);
+      console.log(error);
       return new Error();
     }
   };
@@ -114,6 +121,9 @@ function AdminRegister() {
             Cadastrar
           </button>
         </label>
+        <span data-testid={ `${ROUTE}__${REGISTER_ERROR_ELEMENT}` }>
+          { emailError ? 'Alguma menssagem de erro' : null }
+        </span>
 
       </form>
 
