@@ -36,8 +36,35 @@ const { createTokenJWT } = require('../Utils/jwt');
       return { type: 409, message: 'Conflict' };
   };
 
+  const getSellers = async () => {
+    const sellers = await User.findAll({
+      where: {
+        role: 'seller',
+      },
+      attributes: {
+        exclude: ['password'],
+      },
+    });
+
+    return sellers;
+  };
+
+  const getCustomers = async () => {
+    const customers = await User.findAll({
+      where: {
+        role: 'customer',
+      },
+      attributes: {
+        exclude: ['password'],
+      },
+    });
+
+    return customers;
+  };
+
   module.exports = {
   getByEmailAndPassword,
   registerLogin,
-
+  getSellers,
+  getCustomers,
 };

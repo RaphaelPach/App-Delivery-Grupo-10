@@ -24,11 +24,11 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id'
       },
     },
-    totalPriece: {
+    totalPrice: {
       type: DataTypes.DECIMAL(9, 2),
       allowNull: false,
     },
-    deliveryAdrees: {
+    deliveryAddress: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -49,6 +49,11 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'sales',
     underscored: true,
   });
+
+  Sale.associate = ({ User }) => {
+    Sale.belongsTo(User, {foreignKey: 'user_id', as: 'users'},
+    {foreignKey: 'seller_id', as: 'users'})
+  }
 
   return Sale;
 };

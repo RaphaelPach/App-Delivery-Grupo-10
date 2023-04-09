@@ -4,6 +4,8 @@ const login = require('../controllers/login.controller');
 const loginAdmin = require('../controllers/loginAdmin.controller');
 const token = require('../Utils/jwt');
 const products = require('../controllers/products.controller');
+const users = require('../controllers/user.controller');
+const sales = require('../controllers/sale.controller');
 const verifyLoginFields = require('../middlewares/verifyLoginFields');
 const adminHandler = require('../middlewares/adminHandler');
 
@@ -18,5 +20,10 @@ adminHandler.registerVerifyEmail,
 adminHandler.registerVerifyName,
 loginAdmin.registerLoginAdmin,
 );
+
+routes.get('/customers', users.getCustomers);
+routes.get('/sellers', users.getSellers);
+
+routes.post('/newSale', token.decodeToken, sales.createNewSale);
 
 module.exports = routes;
