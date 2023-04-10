@@ -1,13 +1,15 @@
 const { Sale, SaleProduct } = require('../../database/models');
 
 const createNewSale = async (obj) => {
+  const novaData = new Date();
+
   const newSale = await Sale.create({
     userId: obj.userId,
     sellerId: obj.sellerId,
     totalPrice: obj.totalPrice,
     deliveryAddress: obj.deliveryAddress,
     deliveryNumber: obj.deliveryNumber,
-    saleDate: new Date(),
+    saleDate: novaData,
     status: 'Pendente',
   });
 
@@ -20,6 +22,12 @@ const createNewSale = async (obj) => {
   return newSale;
 };
 
+const getAllSales = async () => {
+  const sales = await Sale.findAll();
+
+  return sales;
+};
+
 // {
 //   "userId": 3,
 //   "sellerId": 2,
@@ -30,4 +38,5 @@ const createNewSale = async (obj) => {
 
 module.exports = {
   createNewSale,
+  getAllSales,
 };

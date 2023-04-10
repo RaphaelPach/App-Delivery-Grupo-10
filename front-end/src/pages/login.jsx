@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Redirect } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import { loginHTTP } from '../Helpers/axios';
@@ -26,6 +26,15 @@ function Login() {
     return !(Regex.test(email) && password.length >= SIX);
   };
 
+  useEffect(() => {
+    const localUser = JSON.parse(localStorage.getItem('user'));
+    if (localUser && localUser.role === 'administrator') {
+      history.push('/admin/manage');
+    } else if (localUser && localUser.role === 'customer') {
+      history.push('/customer/products');
+    }
+  }, [history]);
+
   const requestLogin = async (event) => {
     event.preventDefault();
     try {
@@ -41,10 +50,7 @@ function Login() {
 
       localStorage.setItem('user', JSON.stringify(user));
       setEmailError(false);
-      if (user.role === 'administrator') {
-        return history.push('/admin/manage');
-      }
-      return history.push('/customer/products');
+      history.push('/customer/products');
     } catch (error) {
       setEmailError(true);
       return new Error();

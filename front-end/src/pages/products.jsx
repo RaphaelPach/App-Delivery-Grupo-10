@@ -15,19 +15,15 @@ function Products() {
     const ONE_SEC = 1000;
 
     const getProducts = async () => {
-      if (JSON.parse(localStorage.getItem('user')) === null) {
-        localStorage.setItem('user', JSON.stringify({ token: '' }));
-      }
       try {
         const user = JSON.parse(localStorage.getItem('user'));
         const response = await loginHTTP({
-          method: 'get', url: '/customer/products', token: user.token });
+          method: 'GET', url: '/customer/products', token: user.token });
         setProducts(response.data);
         setLoading(false);
       } catch (error) {
         localStorage.removeItem('user');
-        history.push('/');
-        return new Error();
+        return history.push('/');
       }
     };
 

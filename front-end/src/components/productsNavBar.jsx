@@ -30,7 +30,12 @@ function ProductsNavBar() {
   return (
     <nav>
       <a href="/produtos" data-testid={ `${ROUTE}__${NAV_PRODUCTS}` }>PRODUTOS</a>
-      <a href="/ordems" data-testid={ `${ROUTE}__${NAV_ORDERS}` }>MEUS PEDIDOS</a>
+      <a
+        href="/customer/orders"
+        data-testid={ `${ROUTE}__${NAV_ORDERS}` }
+      >
+        MEUS PEDIDOS
+      </a>
       <span
         data-testid={ `${ROUTE}__${NAV_USER_FULL_NAME}` }
       >
