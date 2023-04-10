@@ -84,6 +84,7 @@ function Checkout() {
           totalPrice,
           deliveryAddress,
           deliveryNumber,
+          products,
         },
         token: user.token });
 

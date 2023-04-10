@@ -1,4 +1,4 @@
-const { Sale } = require('../../database/models');
+const { Sale, SaleProduct } = require('../../database/models');
 
 const createNewSale = async (obj) => {
   const newSale = await Sale.create({
@@ -10,6 +10,12 @@ const createNewSale = async (obj) => {
     saleDate: new Date(),
     status: 'Pendente',
   });
+
+  await obj.products.forEach((e) => SaleProduct.create({
+    saleId: newSale.id,
+    productId: Number(e.id),
+    quantity: Number(e.quantity),
+  }));
 
   return newSale;
 };
