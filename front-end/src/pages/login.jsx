@@ -32,6 +32,8 @@ function Login() {
       history.push('/admin/manage');
     } else if (localUser && localUser.role === 'customer') {
       history.push('/customer/products');
+    } else if (localUser && localUser.role === 'seller') {
+      history.push('/seller/orders');
     }
   }, [history]);
 
@@ -53,6 +55,10 @@ function Login() {
 
       if (localUser && localUser.role === 'administrator') {
         return history.push('/admin/manage');
+      }
+
+      if (localUser && localUser.role === 'seller') {
+        return history.push('/seller/orders');
       }
 
       setEmailError(false);
