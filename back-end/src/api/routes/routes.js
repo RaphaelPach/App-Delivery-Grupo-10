@@ -28,4 +28,6 @@ routes.post('/newSale', token.decodeToken, sales.createNewSale);
 
 routes.get('/sales', sales.getAllSales);
 
+routes.post('/seller/sales', sales.getSaleBySellerId);
+
 module.exports = routes;

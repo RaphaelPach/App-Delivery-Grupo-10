@@ -28,6 +28,12 @@ const getAllSales = async () => {
   return sales;
 };
 
+const getSaleBySellerId = async (id) => {
+  const sales = await Sale.findAll({ where: { sellerId: id } });
+
+  return sales;
+};
+
 // {
 //   "userId": 3,
 //   "sellerId": 2,
@@ -37,6 +43,7 @@ const getAllSales = async () => {
 // }
 
 module.exports = {
+  getSaleBySellerId,
   createNewSale,
   getAllSales,
 };

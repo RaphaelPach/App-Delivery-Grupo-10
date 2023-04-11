@@ -19,7 +19,18 @@ const getAllSales = async (req, res, next) => {
   }
 };
 
+const getSaleBySellerId = async (req, res, next) => {
+  try {
+    const { id } = req.body;
+    const result = await saleService.getSaleBySellerId(id);
+    return res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
+  getSaleBySellerId,
   createNewSale,
   getAllSales,
 };
