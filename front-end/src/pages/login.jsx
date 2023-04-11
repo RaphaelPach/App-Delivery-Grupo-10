@@ -47,8 +47,14 @@ function Login() {
         email: response.data.email,
         role: response.data.role,
       };
-
       localStorage.setItem('user', JSON.stringify(user));
+
+      const localUser = JSON.parse(localStorage.getItem('user'));
+
+      if (localUser && localUser.role === 'administrator') {
+        return history.push('/admin/manage');
+      }
+
       setEmailError(false);
       history.push('/customer/products');
     } catch (error) {
@@ -56,7 +62,12 @@ function Login() {
       return new Error();
     }
   };
-
+  /* localStorage.setItem('user', JSON.stringify(user));
+  setEmailError(false);
+  if (user.role === 'administrator') {
+  return history.push('/admin/manage');
+  }
+  return history.push('/customer/products'); */
   if (redirect) {
     return <Redirect to="/register" />;
   }
