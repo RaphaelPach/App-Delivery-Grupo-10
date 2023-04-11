@@ -33,8 +33,8 @@ const getSaleQuery = {
   include: [
     {
       model: User, 
-      as: 'users',
-      attributes: [['name', 'seller']],
+      as: 'seller',
+      /* attributes: [['name', 'seller']], */
       required: true,
     },
     {
@@ -48,7 +48,6 @@ const getSaleQuery = {
 };
 
 const getSale = async (id) => {
-  console.log(getSaleQuery);
   const sale = await Sale.findByPk(id, getSaleQuery);
   return sale;
 };

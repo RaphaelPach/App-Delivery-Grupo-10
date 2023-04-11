@@ -15,18 +15,20 @@ const TOTAL_PRICE = 'element-order-total-price';
 function OrderDetails() {
   const { id } = useParams();
 
-  const [sale, setSale] = useState();
+  const [sale, setSale] = useState({ seller: {}, products: [] });
+  const [status, setStatus] = useState('');
   const date = new Date(sale.saleDate);
   const formatedDate = date.toLocaleDateString('pt-BR');
 
   useEffect(() => {
     const getSale = async () => {
+      console.log(id);
       const result = await loginHTTP({
         url: `/sales/${id}`,
         method: 'GET',
       });
-      console.log(getSale);
       setSale(result.data);
+      setStatus(result.status);
     };
 
     getSale();
@@ -46,26 +48,29 @@ function OrderDetails() {
     </thead>
   );
 
+  function isDisabled() {
+    return status !== 'em transito';
+  }
+
   return (
     <div>
       <ProductsNavBar />
       <h1>Detalhe do Pedido</h1>
       <p data-testid={ `${ROUTE}__${ID_ORDER}` }>
         {' '}
-        PEDIDO
         {' '}
         {sale.id}
       </p>
       <p data-testid={ `${ROUTE}__${SELLER_NAME}` }>
-        P. Vend:
         {' '}
-        {sale.users.seller}
+        {sale.seller.name}
       </p>
-      <p data-testis={ `${ROUTE}__${DATE_ORDER}` }>{formatedDate}</p>
+      <p data-testid={ `${ROUTE}__${DATE_ORDER}` }>{formatedDate}</p>
       <p data-testid={ `${ROUTE}__${STATUS_ORDER}` }>{sale.status}</p>
       <button
         type="button"
         data-testid={ `${ROUTE}__${DELIVERY_CHECK}` }
+        disabled={ isDisabled() }
       >
         Marcar como entregue
       </button>
@@ -76,9 +81,8 @@ function OrderDetails() {
         )) }
       </table>
       <p data-testid={ `${ROUTE}__${TOTAL_PRICE}` }>
-        TOTAL:
         {' '}
-        {sale.totalPrice}
+        { `${sale.totalPrice}`.replace('.', ',') }
       </p>
     </div>
   );

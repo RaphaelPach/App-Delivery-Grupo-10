@@ -11,8 +11,8 @@ const TABLE_SUB_TOTAL = 'element-order-table-sub-total';
 function DetailsTable(props) {
   const { index } = props;
   const { product } = props;
-  const { name, SalesProducts, price } = product;
-  const { quantity } = SalesProducts;
+  const { name, SaleProduct, price } = product;
+  const { quantity } = SaleProduct;
 
   return (
     <div>
@@ -39,10 +39,10 @@ function DetailsTable(props) {
 DetailsTable.propTypes = {
   index: PropTypes.number.isRequired,
   product: PropTypes.shape({
-    SalesProducts: PropTypes.shape({
+    SaleProduct: PropTypes.shape({
       quantity: PropTypes.number.isRequired,
     }),
-    price: PropTypes.number.isRequired,
+    price: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
   }).isRequired,
 };
