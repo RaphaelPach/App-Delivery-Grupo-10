@@ -57,11 +57,12 @@ function OrderDetails() {
       <ProductsNavBar />
       <h1>Detalhe do Pedido</h1>
       <p data-testid={ `${ROUTE}__${ID_ORDER}` }>
-        {' '}
+        PEDIDO
         {' '}
         {sale.id}
       </p>
       <p data-testid={ `${ROUTE}__${SELLER_NAME}` }>
+        P. Vend:
         {' '}
         {sale.seller.name}
       </p>
@@ -81,6 +82,7 @@ function OrderDetails() {
         )) }
       </table>
       <p data-testid={ `${ROUTE}__${TOTAL_PRICE}` }>
+        Total:
         {' '}
         { `${sale.totalPrice}`.replace('.', ',') }
       </p>

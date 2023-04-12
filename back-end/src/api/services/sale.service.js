@@ -47,7 +47,7 @@ const getSaleQuery = {
   ],
 };
 
-const getSale = async (id) => {
+const getSaleById = async (id) => {
   const sale = await Sale.findByPk(id, getSaleQuery);
   return sale;
 };
@@ -92,5 +92,5 @@ module.exports = {
   getSaleBySellerId,
   createNewSale,
   getAllSales,
-  getSale,
+  getSaleById,
 };
