@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false, 
       references: { 
         model: 'users',
-        key: 'id'
+        key: 'id',
       },
     },
     totalPrice: {
@@ -50,9 +50,10 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
   });
 
-  Sale.associate = ({ User }) => {
-    Sale.belongsTo(User, {foreignKey: 'user_id', as: 'users'},
-    {foreignKey: 'seller_id', as: 'users'})
+  Sale.associate = ({ User, SaleProduct }) => {
+    Sale.belongsTo(User, {foreignKey: 'user_id', as: 'users'})
+    Sale.belongsTo(User, {foreignKey: 'seller_id', as: 'seller'})
+    Sale.hasMany(SaleProduct, {foreignKey: 'sale_id', as: 'sales'})
   }
 
   return Sale;

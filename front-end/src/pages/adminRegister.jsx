@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-// import { useHistory } from 'react-router-dom';
 import ProductsNavBar from '../components/productsNavBar';
 import { loginHTTP } from '../Helpers/axios';
 
@@ -41,17 +40,6 @@ function AdminRegister() {
         body:
          { name, email, password, role: choice },
         token });
-
-      // const user = {
-      //   token: response.data.token,
-      //   name,
-      //   email,
-      //   role: response.data.role,
-      // };
-
-      // localStorage.setItem('user', JSON.stringify(user));
-
-    // return history.push('/customer/products'
     } catch (error) {
       setEmailError(true);
       console.log(error);
