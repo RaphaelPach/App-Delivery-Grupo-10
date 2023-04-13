@@ -34,7 +34,7 @@ const getSaleQuery = {
     {
       model: User, 
       as: 'seller',
-      /* attributes: [['name', 'seller']], */
+      attributes: ['name'],
       required: true,
     },
     {

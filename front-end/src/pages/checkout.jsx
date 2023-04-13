@@ -5,7 +5,7 @@ import AppContext from '../context/AppContext';
 import ProductsNavBar from '../components/productsNavBar';
 import CheckoutTable from '../components/checkoutTable';
 import TotalPrice from '../components/totalPrice';
-import { loginHTTP } from '../Helpers/axios';
+import requestHTTP from '../Helpers/axios';
 
 const ROUTE_TOTAL_PRICE = 'customer-checkout';
 const TOTAL_PRICE = 'element-order-total-price';
@@ -41,13 +41,13 @@ function Checkout() {
   };
 
   const getSellers = async () => {
-    const response = await loginHTTP({
+    const response = await requestHTTP({
       method: 'GET', url: '/sellers' });
     setSellers(response.data);
   };
 
   const getCustomers = async () => {
-    const response = await loginHTTP({
+    const response = await requestHTTP({
       method: 'GET', url: '/customers' });
     setCustomers(response.data);
   };
@@ -75,7 +75,7 @@ function Checkout() {
 
       console.log(user.token);
 
-      const response = await loginHTTP({
+      const response = await requestHTTP({
         method: 'POST',
         url: '/newSale',
         body: {

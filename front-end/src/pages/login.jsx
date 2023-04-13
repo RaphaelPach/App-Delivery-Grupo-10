@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Redirect } from 'react-router';
 import { useHistory } from 'react-router-dom';
-import { loginHTTP } from '../Helpers/axios';
+import requestHTTP from '../Helpers/axios';
 
 const ROUTE = 'common_login';
 const EMAIL_ELEMENT = 'input-email';
@@ -40,7 +40,7 @@ function Login() {
   const requestLogin = async (event) => {
     event.preventDefault();
     try {
-      const response = await loginHTTP({
+      const response = await requestHTTP({
         method: 'POST', url: '/login', body: { email, password } });
 
       const user = {
