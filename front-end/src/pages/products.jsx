@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import ProductsNavBar from '../components/productsNavBar';
 import ProductCard from '../components/productsCard';
 // pelo amor de deus
-import { loginHTTP } from '../Helpers/axios';
+import requestHTTP from '../Helpers/axios';
 import ButtonCart from '../components/buttonCart';
 
 function Products() {
@@ -17,7 +17,7 @@ function Products() {
     const getProducts = async () => {
       try {
         const user = JSON.parse(localStorage.getItem('user'));
-        const response = await loginHTTP({
+        const response = await requestHTTP({
           method: 'GET', url: '/customer/products', token: user.token });
         setProducts(response.data);
         setLoading(false);

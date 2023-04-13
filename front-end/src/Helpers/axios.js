@@ -4,7 +4,7 @@ const api = axios.create({
   baseURL: `http://localhost:${process.env.REACT_APP_BACKEND_PORT || '3001'}`,
 });
 
-const loginHTTP = async ({ url, method, body, token }) => api
+const requestHTTP = async ({ url, method, body, token }) => api
   .request({
     url,
     method,
@@ -16,16 +16,4 @@ const loginHTTP = async ({ url, method, body, token }) => api
     },
   }).then(({ status, data }) => ({ status, data }));
 
-const adminRegisterHTTP = async ({ url, method, body }) => api
-  .request({
-    url,
-    method,
-    data: body,
-    // headers: {
-    //   Authorization: token,
-    //   Accept: 'application/json',
-    //   'Content-Type': 'application/json',
-    // },
-  }).then(({ status, data }) => ({ status, data }));
-
-export { loginHTTP, adminRegisterHTTP };
+export default requestHTTP;
