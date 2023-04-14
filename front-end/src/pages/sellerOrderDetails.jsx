@@ -27,7 +27,7 @@ function SellerOrderDetails() {
         method: 'GET',
       });
       setSale(result.data);
-      setStatus(result.status);
+      setStatus(result.data.status);
     };
 
     getSale();
@@ -45,9 +45,15 @@ function SellerOrderDetails() {
     </thead>
   );
 
-  function isDisabled() {
-    return status !== 'Preparando';
-  }
+  const prepare = async (newStatus) => {
+    const updatedStatus = await requestHTTP({
+      url: `/sales/${id}`,
+      method: 'PUT',
+      body: { status: newStatus },
+    });
+    console.log(updatedStatus);
+    setStatus(updatedStatus.data.status);
+  };
 
   return (
     <div>
@@ -59,18 +65,20 @@ function SellerOrderDetails() {
         {sale.id}
       </p>
       <p data-testid={ `${ROUTE}__${DATE_ORDER}` }>{formatedDate}</p>
-      <p data-testid={ `${ROUTE}__${STATUS_ORDER}` }>{sale.status}</p>
+      <p data-testid={ `${ROUTE}__${STATUS_ORDER}` }>{status}</p>
       <button
         type="button"
         data-testid={ `${ROUTE}__${PREPARING_CHECK}` }
-        // disabled={ isDisabled() }
+        disabled={ status !== 'Pendente' }
+        onClick={ () => prepare('Preparando') }
       >
         Preparar pedido
       </button>
       <button
         type="button"
         data-testid={ `${ROUTE}__${DISPATCH_CHECK}` }
-        disabled={ isDisabled() }
+        disabled={ status !== 'Preparando' }
+        onClick={ () => prepare('Em Trânsito') }
       >
         Saiu para entrega
       </button>

@@ -94,6 +94,19 @@ function Checkout() {
     }
   };
 
+  const thead = () => (
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Descrição</th>
+        <th>Quantidade</th>
+        <th>Valor Unitário</th>
+        <th>Sub-Total</th>
+        <th>Remover Item</th>
+      </tr>
+    </thead>
+  );
+
   return (
     loading ? <p>Loading</p> : (
       <div>
@@ -101,9 +114,14 @@ function Checkout() {
         <div>
           <h1>Finalizar Pedido</h1>
         </div>
-        { products.map((product, index) => (
-          <CheckoutTable key={ product.id } index={ index } product={ product } />
-        ))}
+        <table>
+          { thead() }
+          <tbody>
+            { products.map((product, index) => (
+              <CheckoutTable key={ product.id } index={ index } product={ product } />
+            ))}
+          </tbody>
+        </table>
         <TotalPrice datatest={ { ROUTE_TOTAL_PRICE, TOTAL_PRICE } } />
         <h3>Destalhes e Endereço da Entrega</h3>
         <form>
