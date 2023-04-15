@@ -45,13 +45,12 @@ function SellerOrderDetails() {
     </thead>
   );
 
-  const prepare = async (newStatus) => {
+  const changeStatus = async (newStatus) => {
     const updatedStatus = await requestHTTP({
       url: `/sales/${id}`,
       method: 'PUT',
       body: { status: newStatus },
     });
-    console.log(updatedStatus);
     setStatus(updatedStatus.data.status);
   };
 
@@ -70,7 +69,7 @@ function SellerOrderDetails() {
         type="button"
         data-testid={ `${ROUTE}__${PREPARING_CHECK}` }
         disabled={ status !== 'Pendente' }
-        onClick={ () => prepare('Preparando') }
+        onClick={ () => changeStatus('Preparando') }
       >
         Preparar pedido
       </button>
@@ -78,7 +77,7 @@ function SellerOrderDetails() {
         type="button"
         data-testid={ `${ROUTE}__${DISPATCH_CHECK}` }
         disabled={ status !== 'Preparando' }
-        onClick={ () => prepare('Em Trânsito') }
+        onClick={ () => changeStatus('Em Trânsito') }
       >
         Saiu para entrega
       </button>
