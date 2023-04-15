@@ -20,19 +20,6 @@ function CheckoutTable(props) {
 
   const obj = JSON.parse(localStorage.getItem('Cart'));
 
-  const thead = () => (
-    <thead>
-      <tr>
-        <th>Item</th>
-        <th>Descrição</th>
-        <th>Quantidade</th>
-        <th>Valor Unitário</th>
-        <th>Sub-Total</th>
-        <th>Remover Item</th>
-      </tr>
-    </thead>
-  );
-
   const removeItem = () => {
     const newArray = obj.filter((e) => e.id !== id);
     localStorage.setItem('Cart', JSON.stringify(newArray));
@@ -40,31 +27,24 @@ function CheckoutTable(props) {
   };
 
   return (
-    <div>
-      <table>
-        { thead() }
-        <tbody>
-          <tr>
-            <td data-testid={ `${ROUTE}__${TABLE_INDEX}${index}` }>{ index + 1 }</td>
-            <td data-testid={ `${ROUTE}__${TABLE_PRODUCT_NAME}${index}` }>{ name }</td>
-            <td
-              data-testid={ `${ROUTE}__${TABLE_PRODUCT_QUANTITY}${index}` }
-            >
-              { Number(quantity) }
-            </td>
-            <td
-              data-testid={ `${ROUTE}__${TABLE_PRODUCT_PRICE}${index}` }
-            >
-              { price.replace('.', ',') }
-            </td>
-            <td
-              data-testid={ `${ROUTE}__${TABLE_TOTAL}${index}` }
-            >
-              { (Number(quantity) * Number(price)).toFixed(2).replace('.', ',') }
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <tr>
+      <td data-testid={ `${ROUTE}__${TABLE_INDEX}${index}` }>{ index + 1 }</td>
+      <td data-testid={ `${ROUTE}__${TABLE_PRODUCT_NAME}${index}` }>{ name }</td>
+      <td
+        data-testid={ `${ROUTE}__${TABLE_PRODUCT_QUANTITY}${index}` }
+      >
+        { Number(quantity) }
+      </td>
+      <td
+        data-testid={ `${ROUTE}__${TABLE_PRODUCT_PRICE}${index}` }
+      >
+        { price.replace('.', ',') }
+      </td>
+      <td
+        data-testid={ `${ROUTE}__${TABLE_TOTAL}${index}` }
+      >
+        { (Number(quantity) * Number(price)).toFixed(2).replace('.', ',') }
+      </td>
       <button
         onClick={ removeItem }
         data-testid={ `${ROUTE}__${TABLE_REMOVE}${index}` }
@@ -72,7 +52,7 @@ function CheckoutTable(props) {
       >
         REMOVE
       </button>
-    </div>
+    </tr>
   );
 }
 

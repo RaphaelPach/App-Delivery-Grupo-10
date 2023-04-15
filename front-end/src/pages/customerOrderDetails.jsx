@@ -27,7 +27,7 @@ function CustomerOrderDetails() {
         method: 'GET',
       });
       setSale(result.data);
-      setStatus(result.status);
+      setStatus(result.data.status);
     };
 
     getSale();
@@ -45,9 +45,16 @@ function CustomerOrderDetails() {
     </thead>
   );
 
-  function isDisabled() {
-    return status !== 'em transito';
-  }
+  const isDisabled = () => status !== 'Em Trânsito';
+
+  const changeStatus = async () => {
+    const updatedStatus = await requestHTTP({
+      url: `/sales/${id}`,
+      method: 'PUT',
+      body: { status: 'Entregue' },
+    });
+    setStatus(updatedStatus.data.status);
+  };
 
   return (
     <div>
@@ -64,11 +71,12 @@ function CustomerOrderDetails() {
         {sale.seller.name}
       </p>
       <p data-testid={ `${ROUTE}__${DATE_ORDER}` }>{formatedDate}</p>
-      <p data-testid={ `${ROUTE}__${STATUS_ORDER}` }>{sale.status}</p>
+      <p data-testid={ `${ROUTE}__${STATUS_ORDER}` }>{status}</p>
       <button
         type="button"
         data-testid={ `${ROUTE}__${DELIVERY_CHECK}` }
         disabled={ isDisabled() }
+        onClick={ changeStatus }
       >
         Marcar como entregue
       </button>
