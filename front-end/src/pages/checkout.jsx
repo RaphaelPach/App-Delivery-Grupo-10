@@ -149,7 +149,7 @@ function Checkout() {
         </Table>
         <TotalPrice datatest={ { ROUTE_TOTAL_PRICE, TOTAL_PRICE } } />
         <Box sx={ { display: 'flex', justifyContent: 'center' } }>
-          <h2>Detalhes e Endereço da Entrega</h2>
+          <h2>Detalhes e Endereço da Entrega:</h2>
         </Box>
         <Stack
           sx={ {
