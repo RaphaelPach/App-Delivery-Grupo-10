@@ -1,5 +1,9 @@
 import { useContext } from 'react';
 import PropTypes from 'prop-types';
+import { Button,
+  TableBody,
+  TableCell,
+  TableRow } from '@mui/material';
 import AppContext from '../context/AppContext';
 
 const ROUTE = 'customer_checkout';
@@ -20,19 +24,6 @@ function CheckoutTable(props) {
 
   const obj = JSON.parse(localStorage.getItem('Cart'));
 
-  const thead = () => (
-    <thead>
-      <tr>
-        <th>Item</th>
-        <th>Descrição</th>
-        <th>Quantidade</th>
-        <th>Valor Unitário</th>
-        <th>Sub-Total</th>
-        <th>Remover Item</th>
-      </tr>
-    </thead>
-  );
-
   const removeItem = () => {
     const newArray = obj.filter((e) => e.id !== id);
     localStorage.setItem('Cart', JSON.stringify(newArray));
@@ -40,39 +31,49 @@ function CheckoutTable(props) {
   };
 
   return (
-    <div>
-      <table>
-        { thead() }
-        <tbody>
-          <tr>
-            <td data-testid={ `${ROUTE}__${TABLE_INDEX}${index}` }>{ index + 1 }</td>
-            <td data-testid={ `${ROUTE}__${TABLE_PRODUCT_NAME}${index}` }>{ name }</td>
-            <td
-              data-testid={ `${ROUTE}__${TABLE_PRODUCT_QUANTITY}${index}` }
-            >
-              { Number(quantity) }
-            </td>
-            <td
-              data-testid={ `${ROUTE}__${TABLE_PRODUCT_PRICE}${index}` }
-            >
-              { price.replace('.', ',') }
-            </td>
-            <td
-              data-testid={ `${ROUTE}__${TABLE_TOTAL}${index}` }
-            >
-              { (Number(quantity) * Number(price)).toFixed(2).replace('.', ',') }
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <button
-        onClick={ removeItem }
-        data-testid={ `${ROUTE}__${TABLE_REMOVE}${index}` }
-        type="button"
-      >
-        REMOVE
-      </button>
-    </div>
+
+    <TableBody>
+      <TableRow>
+        <TableCell align="right" data-testid={ `${ROUTE}__${TABLE_INDEX}${index}` }>
+          { index + 1 }
+        </TableCell>
+        <TableCell
+          align="center"
+          data-testid={ `${ROUTE}__${TABLE_PRODUCT_NAME}${index}` }
+        >
+          { name }
+        </TableCell>
+        <TableCell
+          align="center"
+          data-testid={ `${ROUTE}__${TABLE_PRODUCT_QUANTITY}${index}` }
+        >
+          { Number(quantity) }
+        </TableCell>
+        <TableCell
+          align="center"
+          data-testid={ `${ROUTE}__${TABLE_PRODUCT_PRICE}${index}` }
+        >
+          { price.replace('.', ',') }
+        </TableCell>
+        <TableCell
+          align="center"
+          data-testid={ `${ROUTE}__${TABLE_TOTAL}${index}` }
+        >
+          { (Number(quantity) * Number(price)).toFixed(2).replace('.', ',') }
+        </TableCell>
+        <TableCell align="center">
+          <Button
+            onClick={ removeItem }
+            data-testid={ `${ROUTE}__${TABLE_REMOVE}${index}` }
+            type="button"
+            variant="contained"
+
+          >
+            REMOVE
+          </Button>
+        </TableCell>
+      </TableRow>
+    </TableBody>
   );
 }
 

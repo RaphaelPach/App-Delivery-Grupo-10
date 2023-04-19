@@ -19,6 +19,12 @@
     "lint:styles": "stylelint **/*.css --config .stylelintrc.json --ignore-disables --allow-empty-input"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@fontsource/roboto": "^4.5.8",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.12.0",
+    "@mui/styled-engine-sc": "^5.12.0",
     "@testing-library/jest-dom": "5.16.2",
     "@testing-library/react": "12.1.4",
     "@testing-library/user-event": "13.5.0",
@@ -27,6 +33,7 @@
     "react-router-dom": "5.3.4",
     "react-scripts": "5.0.0",
     "serve": "13.0.2",
+    "styled-components": "^5.3.9",
     "web-vitals": "2.1.4"
   },
   "devDependencies": {
@@ -67,5 +74,5 @@
     "moduleNameMapper": {
       "^axios$": "axios/dist/axios.js"
     }
-  }  
+  }
 }

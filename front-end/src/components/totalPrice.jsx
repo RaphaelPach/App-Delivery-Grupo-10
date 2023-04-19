@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
+import { Box } from '@mui/material';
 import AppContext from '../context/AppContext';
 
 const ROUTE = 'customer_checkout';
@@ -30,9 +31,12 @@ function TotalPrice() {
   }, [update]);
 
   return (
-    <div data-testid={ `${ROUTE}__${ORDERPRICE}` }>
+    <Box
+      data-testid={ `${ROUTE}__${ORDERPRICE}` }
+      sx={ { marginTop: '20px', fontSize: '25px' } }
+    >
       { totalPrice.toFixed(2).replace('.', ',') }
-    </div>
+    </Box>
   );
 }
 
