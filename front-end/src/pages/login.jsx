@@ -3,7 +3,7 @@ import { Box } from '@mui/system';
 import { useState, useEffect } from 'react';
 import { Redirect } from 'react-router';
 import { useHistory } from 'react-router-dom';
-import { loginHTTP } from '../Helpers/axios';
+import requestHTTP from '../Helpers/axios';
 import photo from '../images/cerveja1.jpg';
 /* import photo from '../images/anittaImage.jpg'; */
 /* import cerveja2 from '../images/cerveja2'; */
@@ -42,7 +42,7 @@ function Login() {
   const requestLogin = async (event) => {
     event.preventDefault();
     try {
-      const response = await loginHTTP({
+      const response = await requestHTTP({
         method: 'POST', url: '/login', body: { email, password } });
 
       const user = {

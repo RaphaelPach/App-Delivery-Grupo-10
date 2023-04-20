@@ -15,7 +15,7 @@ import AppContext from '../context/AppContext';
 import ProductsNavBar from '../components/productsNavBar';
 import CheckoutTable from '../components/checkoutTable';
 import TotalPrice from '../components/totalPrice';
-import { loginHTTP } from '../Helpers/axios';
+import requestHTTP from '../Helpers/axios';
 
 const ROUTE_TOTAL_PRICE = 'customer-checkout';
 const TOTAL_PRICE = 'element-order-total-price';
@@ -53,7 +53,7 @@ function Checkout() {
   };
 
   const getSellers = async () => {
-    const response = await loginHTTP({
+    const response = await requestHTTP({
       method: 'GET',
       url: '/sellers',
     });
@@ -61,7 +61,7 @@ function Checkout() {
   };
 
   const getCustomers = async () => {
-    const response = await loginHTTP({
+    const response = await requestHTTP({
       method: 'GET',
       url: '/customers',
     });
@@ -91,7 +91,7 @@ function Checkout() {
 
       console.log(user.token);
 
-      const response = await loginHTTP({
+      const response = await requestHTTP({
         method: 'POST',
         url: '/newSale',
         body: {
@@ -123,9 +123,11 @@ function Checkout() {
       </tr>
     </thead>
   );
+
   if (loading) {
     return <p>Loading</p>;
   }
+
   return (
     <Box sx={ { backgroundColor: '#fffde7', width: '100%', height: '100vh' } }>
       <ProductsNavBar />

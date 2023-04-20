@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import ProductsNavBar from '../components/productsNavBar';
-import { loginHTTP } from '../Helpers/axios';
+import requestHTTP from '../Helpers/axios';
 
 const ROUTE = 'admin_manage';
 const NAME_ELEMENT = 'input-name';
@@ -34,7 +34,7 @@ function AdminRegister() {
     try {
       const admin = JSON.parse(localStorage.getItem('user'));
       const { token } = admin;
-      await loginHTTP({
+      await requestHTTP({
         url: '/admin/manage',
         method: 'POST',
         body:

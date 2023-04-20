@@ -8,7 +8,7 @@ const TABLE_ITEM_QUANTITY = 'element-order-table-quantity';
 const TABLE_UNIT_PRICE = 'element-order-table-unit-price';
 const TABLE_SUB_TOTAL = 'element-order-table-sub-total';
 
-function detailsTable(props) {
+function DetailsTable(props) {
   const { index, product, ROUTE } = props;
   const { name, SaleProduct, price } = product;
   const { quantity } = SaleProduct;
@@ -45,7 +45,7 @@ function detailsTable(props) {
   );
 }
 
-detailsTable.propTypes = {
+DetailsTable.propTypes = {
   index: PropTypes.number.isRequired,
   product: PropTypes.shape({
     SaleProduct: PropTypes.shape({
@@ -57,4 +57,4 @@ detailsTable.propTypes = {
   ROUTE: PropTypes.string.isRequired,
 };
 
-export default detailsTable;
+export default DetailsTable;

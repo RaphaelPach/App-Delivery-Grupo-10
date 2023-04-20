@@ -34,7 +34,7 @@ const getSaleQuery = {
     {
       model: User, 
       as: 'seller',
-      /* attributes: [['name', 'seller']], */
+      attributes: ['name'],
       required: true,
     },
     {
@@ -52,45 +52,22 @@ const getSaleById = async (id) => {
   return sale;
 };
 
-// const getTudo = async (id) => {
-//   let array = [ ]
-//   const sale = await SaleProduct.findAll({ where: { saleId: id } })
-//   sale.forEach(async (e) => {
-//     const product = await Product.findOne({ where: { id: e.productId } })
-//     const sale = await Sale.findOne({ where: { id: e.saleId } })
-//     const user = await User.findOne({ where: { id: sale.sellerId } })
-//     const obj = {
-//       saleId = sale.id,
-//       quantity: e.quantity,
-//       price: product.price,
-//       totalPrice: sale.totalPrice,
-//       saleDate: sale.saleDate,
-//       status: sale.status,
-//       sellerName: user.name,
-//       name: product.name,
-//     }
-//     array.push(obj)
-//   })
-//   return array;
-// }
-
 const getSaleBySellerId = async (id) => {
   const sales = await Sale.findAll({ where: { sellerId: id } });
 
   return sales;
 };
 
-// {
-//   "userId": 3,
-//   "sellerId": 2,
-//   "totalPrice": 78.99,
-//   "deliveryAddress": "rua de teste",
-//   "deliveryNumber": 290
-// }
+const updateSaleStatus = async (id, status) => {
+  await Sale.update({ status }, { where: { id } });
+  const updatedStatus = await Sale.findByPk(id, { attributes: ['status'] });
+  return updatedStatus;
+};
 
 module.exports = {
   getSaleBySellerId,
   createNewSale,
   getAllSales,
   getSaleById,
+  updateSaleStatus,
 };

@@ -2,7 +2,7 @@ import { Box, Button, Container, Paper, Stack, TextField } from '@mui/material';
 import { useState, useEffect } from 'react';
 /* import { Redirect } from 'react-router'; */
 import { useHistory } from 'react-router-dom';
-import { loginHTTP } from '../Helpers/axios';
+import requestHTTP from '../Helpers/axios';
 
 const ROUTE = 'common_register';
 const NAME_ELEMENT = 'input-name';
@@ -31,7 +31,7 @@ function Register() {
   const requestRegister = async (event) => {
     event.preventDefault();
     try {
-      const response = await loginHTTP({
+      const response = await requestHTTP({
         method: 'POST', url: '/register', body: { name, email, password } });
 
       const user = {
