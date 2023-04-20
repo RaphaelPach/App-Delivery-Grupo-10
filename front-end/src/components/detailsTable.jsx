@@ -1,3 +1,5 @@
+import { Paper, Table, TableBody, TableCell, TableRow } from '@mui/material';
+import { Box } from '@mui/system';
 import PropTypes from 'prop-types';
 
 const TABLE_ITEM_NUMBER = 'element-order-table-item-number';
@@ -12,20 +14,34 @@ function DetailsTable(props) {
   const { quantity } = SaleProduct;
 
   return (
-    <tr>
-      <td data-testid={ `${ROUTE}__${TABLE_ITEM_NUMBER}-${index}` }>{index + 1}</td>
-      <td data-testid={ `${ROUTE}__${TABLE_ITEM_NAME}-${index}` }>{name}</td>
-      <td data-testid={ `${ROUTE}__${TABLE_ITEM_QUANTITY}-${index}` }>
-        {Number(quantity)}
-      </td>
-      <td data-testid={ `${ROUTE}__${TABLE_UNIT_PRICE}-${index}` }>
-        { price.replace('.', ',') }
+    <Box sx={ { alignItems: 'center' } }>
+      <Table
+        component={ Paper }
+        elevation={ 4 }
+        sx={ { marginTop: '10px' } }
+      >
+        <TableBody>
+          <TableRow>
+            <TableCell data-testid={ `${ROUTE}__${TABLE_ITEM_NUMBER}-${index}` }>
+              {index + 1}
+            </TableCell>
+            <TableCell data-testid={ `${ROUTE}__${TABLE_ITEM_NAME}-${index}` }>
+              {name}
+            </TableCell>
+            <TableCell data-testid={ `${ROUTE}__${TABLE_ITEM_QUANTITY}-${index}` }>
+              {Number(quantity)}
+            </TableCell>
+            <TableCell data-testid={ `${ROUTE}__${TABLE_UNIT_PRICE}-${index}` }>
+              { price.replace('.', ',') }
 
-      </td>
-      <td data-testid={ `${ROUTE}__${TABLE_SUB_TOTAL}-${index}` }>
-        { (Number(quantity) * Number(price)).toFixed(2).replace('.', ',') }
-      </td>
-    </tr>
+            </TableCell>
+            <TableCell data-testid={ `${ROUTE}__${TABLE_SUB_TOTAL}-${index}` }>
+              { (Number(quantity) * Number(price)).toFixed(2).replace('.', ',') }
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </Box>
   );
 }
 

@@ -1,3 +1,4 @@
+import { Box, Button, Container } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import DetailsTable from '../components/detailsTable';
@@ -57,48 +58,54 @@ function CustomerOrderDetails() {
   };
 
   return (
-    <div>
+    <Box
+      sx={ { width: { md: '100%', xs: '30%' },
+        backgroundColor: '#fffde7',
+        height: '100vh' } }
+    >
       <ProductsNavBar />
-      <h1>Detalhe do Pedido</h1>
-      <p data-testid={ `${ROUTE}__${ID_ORDER}` }>
-        PEDIDO
-        {' '}
-        {sale.id}
-      </p>
-      <p data-testid={ `${ROUTE}__${SELLER_NAME}` }>
-        P. Vend:
-        {' '}
-        {sale.seller.name}
-      </p>
-      <p data-testid={ `${ROUTE}__${DATE_ORDER}` }>{formatedDate}</p>
-      <p data-testid={ `${ROUTE}__${STATUS_ORDER}` }>{status}</p>
-      <button
-        type="button"
-        data-testid={ `${ROUTE}__${DELIVERY_CHECK}` }
-        disabled={ isDisabled() }
-        onClick={ changeStatus }
-      >
-        Marcar como entregue
-      </button>
-      <table>
-        { thead() }
-        <tbody>
-          { sale.products.map((p, index) => (
-            <DetailsTable
-              key={ p.name }
-              index={ index }
-              product={ p }
-              ROUTE={ ROUTE }
-            />
-          )) }
-        </tbody>
-      </table>
-      <p data-testid={ `${ROUTE}__${TOTAL_PRICE}` }>
-        Total:
-        {' '}
-        { `${sale.totalPrice}`.replace('.', ',') }
-      </p>
-    </div>
+      <Box sx={ { alignItens: 'center' } }>
+        <h2>Detalhe do Pedido</h2>
+        <Container sx={ { alignItems: 'center', paddingTop: '5px' } }>
+          <p data-testid={ `${ROUTE}__${ID_ORDER}` }>
+            PEDIDO
+            {' '}
+            {sale.id}
+          </p>
+          <p data-testid={ `${ROUTE}__${SELLER_NAME}` }>
+            P. Vend:
+            {' '}
+            {sale.seller.name}
+          </p>
+          <p data-testid={ `${ROUTE}__${DATE_ORDER}` }>{formatedDate}</p>
+          <p data-testid={ `${ROUTE}__${STATUS_ORDER}` }>{status}</p>
+          <Button
+            type="button"
+            data-testid={ `${ROUTE}__${DELIVERY_CHECK}` }
+            disabled={ isDisabled() }
+            onClick={ changeStatus }
+          >
+            Marcar como entregue
+          </Button>
+          <table>
+            { thead() }
+            { sale.products.map((p, index) => (
+              <DetailsTable
+                key={ p.name }
+                index={ index }
+                product={ p }
+                ROUTE={ ROUTE }
+              />
+            )) }
+          </table>
+          <p data-testid={ `${ROUTE}__${TOTAL_PRICE}` }>
+            Total:
+            {' '}
+            { `${sale.totalPrice}`.replace('.', ',') }
+          </p>
+        </Container>
+      </Box>
+    </Box>
   );
 }
 

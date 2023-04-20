@@ -1,5 +1,6 @@
 import { useHistory } from 'react-router-dom';
 import { useEffect, useState, useContext } from 'react';
+import { Button } from '@mui/material';
 import AppContext from '../context/AppContext';
 
 const ROUTE = 'customer_products';
@@ -38,16 +39,18 @@ function ButtonCart() {
   }
 
   return (
-    <button
+    <Button
       type="button"
+      variant="contained"
+      sx={ { margin: '20px 0' } }
       data-testid={ `${ROUTE}__${BUTTON_CART}` }
       disabled={ isDisabled() }
-      onClick={ handleClick }
+      onClick={ () => handleClick() }
     >
       <span data-testid={ `${ROUTE}__${CHECKOUT_BOTTOM_VALUE}` }>
         { price?.toFixed(2).replace('.', ',')}
       </span>
-    </button>
+    </Button>
   );
 }
 

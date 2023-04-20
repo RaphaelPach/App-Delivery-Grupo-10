@@ -1,3 +1,4 @@
+import { AppBar, Box, Link, Toolbar } from '@mui/material';
 import { useState, useEffect } from 'react';
 
 const ROUTE = 'customer_products';
@@ -6,9 +7,10 @@ const NAV_ORDERS = 'element-navbar-link-orders';
 const NAV_USER_FULL_NAME = 'element-navbar-user-full-name';
 const NAV_LOGOUT = 'element-navbar-link-logout';
 
+const pixel = 'solid black 2px';
+
 function ProductsNavBar() {
   const [name, setName] = useState('Loading');
-  // falta implementar as funções para a mudança de paginas e entre outros
   useEffect(() => {
     const ONE_SEC = 1000;
 
@@ -28,27 +30,53 @@ function ProductsNavBar() {
   };
 
   return (
-    <nav>
-      <a href="/produtos" data-testid={ `${ROUTE}__${NAV_PRODUCTS}` }>PRODUTOS</a>
-      <a
-        href="/customer/orders"
-        data-testid={ `${ROUTE}__${NAV_ORDERS}` }
-      >
-        MEUS PEDIDOS
-      </a>
-      <span
-        data-testid={ `${ROUTE}__${NAV_USER_FULL_NAME}` }
-      >
-        { name }
-      </span>
-      <a
-        href="/login"
-        onClick={ clear }
-        data-testid={ `${ROUTE}__${NAV_LOGOUT}` }
-      >
-        LOGOUT
-      </a>
-    </nav>
+    <Box sx={ { flexGrow: 1 } }>
+      <AppBar position="static">
+        <Toolbar sx={ { display: 'flex', justifyContent: 'space-around' } }>
+          <Link
+            href="/produtos"
+            sx={ { border: pixel,
+              borderRadius: '5px',
+              color: 'black',
+              padding: '7px',
+              textDecoration: 'none' } }
+            data-testid={ `${ROUTE}__${NAV_PRODUCTS}` }
+          >
+            PRODUTOS
+
+          </Link>
+          <Link
+            href="/customer/orders"
+            sx={ { border: pixel,
+              borderRadius: '5px',
+              color: 'black',
+              padding: '7px',
+              textDecoration: 'none' } }
+            data-testid={ `${ROUTE}__${NAV_ORDERS}` }
+          >
+            MEUS PEDIDOS
+          </Link>
+          <span
+            data-testid={ `${ROUTE}__${NAV_USER_FULL_NAME}` }
+          >
+            { name }
+          </span>
+          <Link
+            href="/login"
+            sx={ { border: pixel,
+              borderRadius: '5px',
+              color: 'black',
+              padding: '7px',
+              textDecoration: 'none',
+            } }
+            onClick={ clear }
+            data-testid={ `${ROUTE}__${NAV_LOGOUT}` }
+          >
+            LOGOUT
+          </Link>
+        </Toolbar>
+      </AppBar>
+    </Box>
   );
 }
 

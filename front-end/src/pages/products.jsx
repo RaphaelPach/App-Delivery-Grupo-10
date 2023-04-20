@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Box, Container, Paper } from '@mui/material';
 import ProductsNavBar from '../components/productsNavBar';
 import ProductCard from '../components/productsCard';
 // pelo amor de deus
@@ -37,12 +38,25 @@ function Products() {
   }, [history]);
 
   return (
-    <div>
+    <Box sx={ { width: { md: '100%', xs: '30%' } } }>
       <ProductsNavBar />
-      { isLoading ? <div>LOADING...</div> : products
-        .map((product) => (<ProductCard key={ product.id } product={ product } />))}
-      <ButtonCart />
-    </div>
+      <Box sx={ { backgroundColor: '#fffde7' } }>
+        <Container sx={ { alignItems: 'center', paddingTop: '5px' } }>
+          <Paper
+            elevation={ 10 }
+            sx={ { display: 'flex',
+              flexWrap: 'wrap',
+              marginTop: '50px',
+              justifyContent: 'center',
+            } }
+          >
+            { isLoading ? <div>LOADING...</div> : products
+              .map((product) => (<ProductCard key={ product.id } product={ product } />))}
+          </Paper>
+          <ButtonCart />
+        </Container>
+      </Box>
+    </Box>
   );
 }
 

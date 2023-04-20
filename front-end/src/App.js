@@ -1,5 +1,7 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import theme from './Theme/theme';
 import ProductProvider from './context/productsProvider';
 import Login from './pages/login';
 import Products from './pages/products';
@@ -14,20 +16,23 @@ import SellerOrderDetails from './pages/sellerOrderDetails';
 function App() {
   return (
     <ProductProvider>
-      <Switch>
-        <Route exact path="/">
-          <Redirect to="/login" />
-        </Route>
-        <Route path="/login" component={ Login } />
-        <Route path="/register" component={ Register } />
-        <Route path="/customer/products" component={ Products } />
-        <Route path="/admin/manage" component={ AdminRegister } />
-        <Route path="/customer/checkout" component={ Checkout } />
-        <Route path="/customer/orders/:id" component={ CustomerOrderDetails } />
-        <Route path="/customer/orders" component={ CustomerOrderPage } />
-        <Route path="/seller/orders/:id" component={ SellerOrderDetails } />
-        <Route path="/seller/orders" component={ SellerOrderPage } />
-      </Switch>
+      <ThemeProvider theme={ theme }>
+        <CssBaseline />
+        <Switch>
+          <Route exact path="/">
+            <Redirect to="/login" />
+          </Route>
+          <Route path="/login" component={ Login } />
+          <Route path="/register" component={ Register } />
+          <Route path="/customer/products" component={ Products } />
+          <Route path="/admin/manage" component={ AdminRegister } />
+          <Route path="/customer/checkout" component={ Checkout } />
+          <Route path="/customer/orders/:id" component={ CustomerOrderDetails } />
+          <Route path="/customer/orders" component={ CustomerOrderPage } />
+          <Route path="/seller/orders/:id" component={ SellerOrderDetails } />
+          <Route path="/seller/orders" component={ SellerOrderPage } />
+        </Switch>
+      </ThemeProvider>
     </ProductProvider>
   );
 }

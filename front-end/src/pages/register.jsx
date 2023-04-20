@@ -1,3 +1,4 @@
+import { Box, Button, Container, Paper, Stack, TextField } from '@mui/material';
 import { useState, useEffect } from 'react';
 /* import { Redirect } from 'react-router'; */
 import { useHistory } from 'react-router-dom';
@@ -52,52 +53,69 @@ function Register() {
     VRegister();
   });
   return (
-    <form action="post" onSubmit={ requestRegister }>
-      <label htmlFor="name">
-        Nome
-        <input
-          type="text"
-          data-testid={ `${ROUTE}__${NAME_ELEMENT}` }
-          name="name"
-          value={ name }
-          onChange={ (e) => setName(e.target.value) }
-          required
-        />
-      </label>
-      <label htmlFor="email">
-        Email
-        <input
-          name="email"
-          type="email"
-          data-testid={ `${ROUTE}__${EMAIL_ELEMENT}` }
-          value={ email }
-          onChange={ (e) => setEmail(e.target.value) }
-          required
-        />
-      </label>
-      <label htmlFor="senha">
-        Senha
-        <input
-          name="senha"
-          type="password"
-          data-testid={ `${ROUTE}__${PASSWORD_ELEMENT}` }
-          value={ password }
-          onChange={ (e) => setPassword(e.target.value) }
-          required
-        />
-      </label>
-      <button
-        type="submit"
-        disabled={ trueOrFalse }
-        onClick={ requestRegister }
-        data-testid={ `${ROUTE}__${REGISTER_BUTTON_ELEMENT}` }
-      >
-        CADASTRAR
-      </button>
-      <span data-testid={ `${ROUTE}__${REGISTER_ERROR_ELEMENT}` }>
-        { emailError ? 'Alguma menssagem de erro' : null }
-      </span>
-    </form>
+    <Box
+      action="post"
+      onSubmit={ requestRegister }
+      sx={ { display: 'flex',
+        width: '100%',
+        minHeight: '100vh',
+        alignItems: 'center',
+        backgroundColor: '#fffde7',
+        height: '100vh',
+      } }
+    >
+      <Container>
+        <Paper elevation={ 10 }>
+          <Stack
+            sx={ {
+              padding: '100px' } }
+          >
+            <TextField
+              type="text"
+              label="Nome"
+              data-testid={ `${ROUTE}__${NAME_ELEMENT}` }
+              name="name"
+              value={ name }
+              onChange={ (e) => setName(e.target.value) }
+              required
+            />
+            <TextField
+              name="email"
+              type="email"
+              label="Email"
+              sx={ { margin: '10px 0' } }
+              data-testid={ `${ROUTE}__${EMAIL_ELEMENT}` }
+              value={ email }
+              onChange={ (e) => setEmail(e.target.value) }
+              required
+            />
+            <TextField
+              name="senha"
+              label="Senha"
+              type="password"
+              data-testid={ `${ROUTE}__${PASSWORD_ELEMENT}` }
+              value={ password }
+              onChange={ (e) => setPassword(e.target.value) }
+              required
+            />
+
+            <Button
+              type="submit"
+              sx={ { margin: '10px 0' } }
+              variant="contained"
+              disabled={ trueOrFalse }
+              onClick={ requestRegister }
+              data-testid={ `${ROUTE}__${REGISTER_BUTTON_ELEMENT}` }
+            >
+              CADASTRAR
+            </Button>
+            <span data-testid={ `${ROUTE}__${REGISTER_ERROR_ELEMENT}` }>
+              { emailError ? 'Alguma menssagem de erro' : null }
+            </span>
+          </Stack>
+        </Paper>
+      </Container>
+    </Box>
   );
 }
 

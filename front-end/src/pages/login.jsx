@@ -1,7 +1,12 @@
+import { Button, Container, Paper, Stack, TextField, Typography } from '@mui/material';
+import { Box } from '@mui/system';
 import { useState, useEffect } from 'react';
 import { Redirect } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import requestHTTP from '../Helpers/axios';
+import photo from '../images/cerveja1.jpg';
+/* import photo from '../images/anittaImage.jpg'; */
+/* import cerveja2 from '../images/cerveja2'; */
 
 const ROUTE = 'common_login';
 const EMAIL_ELEMENT = 'input-email';
@@ -15,10 +20,7 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState(false);
-  // const [trueOrFalse, setTrueOrFalse] = useState(true);
-  // const [loginTest, setLoginTest] = useState(false);
   const [redirect, setRedirect] = useState(false);
-  /* const [registerPage, setRegisterPage] = useState(false); */
 
   const Regex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
   const Vlogin = () => {
@@ -68,60 +70,83 @@ function Login() {
       return new Error();
     }
   };
-  /* localStorage.setItem('user', JSON.stringify(user));
-  setEmailError(false);
-  if (user.role === 'administrator') {
-  return history.push('/admin/manage');
-  }
-  return history.push('/customer/products'); */
   if (redirect) {
     return <Redirect to="/register" />;
   }
 
   return (
-    <form action="post" onSubmit={ (event) => requestLogin(event) }>
-      <label htmlFor="email">
-        Email
-        <input
-          type="email"
-          data-testid={ `${ROUTE}__${EMAIL_ELEMENT}` }
-          name="email"
-          value={ email }
-          onChange={ (e) => setEmail(e.target.value) }
-          placeholder="E-mail"
-          required
-        />
-      </label>
-      <label htmlFor="password">
-        senha
-        <input
-          name="password"
-          type="password"
-          data-testid={ `${ROUTE}__${PASSWORD_ELEMENT}` }
-          value={ password }
-          onChange={ (e) => setPassword(e.target.value) }
-          placeholder="senha"
-          required
-        />
-      </label>
-      <button
-        type="submit"
-        disabled={ Vlogin() }
-        data-testid={ `${ROUTE}__${LOGIN_BUTTON_ELEMENT}` }
-      >
-        Login
-      </button>
-      <button
-        type="button"
-        onClick={ () => setRedirect(true) }
-        data-testid={ `${ROUTE}__${REGISTER_BUTTON_ELEMENT}` }
-      >
-        Ainda não tenho conta
-      </button>
-      <span data-testid={ `${ROUTE}__${EMAIL_ERROR_ELEMENT}` }>
-        { emailError ? 'mensagem' : null }
-      </span>
-    </form>
+    <Box
+      sx={ { display: 'flex',
+        width: '100%',
+        minHeight: '100vh',
+        alignItems: 'center',
+        backgroundImage: `url(${photo})`,
+        backgroundSize: 'cover',
+        backgroundPositionY: 'top',
+      } }
+    >
+      <Container>
+        <Paper
+          elevation={ 10 }
+          sx={ { width: { md: '30%', xs: '90%' }, bgcolor: '#fffde7' } }
+        >
+          <Stack
+            action="post"
+            component="form"
+            spacing={ 2 }
+            sx={ { p: 2 } }
+            onSubmit={ (event) => requestLogin(event) }
+          >
+            <Typography
+              variant="h2"
+              color="primary"
+              sx={ { textAlign: 'center', fontFamily: 'monospace' } }
+            >
+              Beer Drop
+            </Typography>
+            <TextField
+              type="email"
+              data-testid={ `${ROUTE}__${EMAIL_ELEMENT}` }
+              name="email"
+              value={ email }
+              onChange={ (e) => setEmail(e.target.value) }
+              placeholder="E-mail"
+              size="normal"
+              required
+            />
+            <TextField
+              name="password"
+              type="password"
+              data-testid={ `${ROUTE}__${PASSWORD_ELEMENT}` }
+              value={ password }
+              onChange={ (e) => setPassword(e.target.value) }
+              placeholder="senha"
+              size="normal"
+              required
+            />
+            <Button
+              variant="contained"
+              color="secondary"
+              disabled={ Vlogin() }
+              type="submit"
+              data-testid={ `${ROUTE}__${LOGIN_BUTTON_ELEMENT}` }
+            >
+              Login
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={ () => setRedirect(true) }
+              data-testid={ `${ROUTE}__${REGISTER_BUTTON_ELEMENT}` }
+            >
+              CADASTRAR
+            </Button>
+            <span data-testid={ `${ROUTE}__${EMAIL_ERROR_ELEMENT}` }>
+              { emailError ? 'mensagem' : null }
+            </span>
+          </Stack>
+        </Paper>
+      </Container>
+    </Box>
   );
 }
 
